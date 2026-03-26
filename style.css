@@ -1,0 +1,1865 @@
+:root {
+  --primary-bg: #030712;
+  --card-bg: rgba(15, 23, 42, 0.75); /* 더 어둡고 불투명하게 변경 */
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1; /* 더 밝은 회색으로 시인성 강화 */
+  --accent-blue: #38bdf8;
+  --accent-purple: #818cf8;
+  --up-color: #fb7185;
+  --down-color: #60a5fa;
+  --hold-color: #fbbf24;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Outfit", sans-serif;
+}
+
+body {
+  background-color: var(--primary-bg);
+  position: relative;
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 2rem 1rem; /* 좌우 패딩 축소로 모바일/작은 화면 너비 확보 */
+  overflow-x: hidden;
+}
+
+/* 배경 이미지 오버레이 추가 */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("finance_dashboard_bg.png");
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.3) saturate(0.8); /* 배경을 어둡게 죽여서 가독성 확보 */
+  z-index: -1;
+}
+
+.container {
+  max-width: 98%; /* 좌우 여백을 거의 없애고 꽉 채움 */
+  margin: 0 auto;
+}
+
+header {
+  margin-bottom: 4rem;
+  text-align: center;
+  animation: fadeInDown 1s ease-out;
+}
+
+header h1 {
+  font-size: 4rem; /* 더 크게 */
+  font-weight: 800;
+  background: linear-gradient(
+    135deg,
+    #fff 0%,
+    var(--accent-blue) 50%,
+    var(--accent-purple) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text; /* 표준 속성 추가 */
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+header p {
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  letter-spacing: 0.05rem;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+}
+
+.date-selector-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.date-select {
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* 드롭다운 옵션 스타일 - 클릭 시 보이는 옵션 */
+.date-select option {
+  background-color: #1e293b; /* 어두운 네이비 배경 */
+  color: #fff; /* 흰색 텍스트 */
+  padding: 0.5rem;
+  font-weight: 500;
+}
+
+.date-selector-wrapper::after {
+  content: "▼";
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-left: -0.5rem;
+  pointer-events: none;
+}
+
+.user-badge {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--accent-blue);
+  background: rgba(56, 189, 248, 0.1);
+  padding: 0.4rem 1.25rem;
+  border-radius: 50px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 1단 구성으로 변경하여 최대 너비 확보 */
+  gap: 3rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px;
+  padding: 1.5rem; /* 카드 내부 패딩 축소 */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.8s ease-out backwards;
+}
+
+/* 개별 카드 블러 강화 */
+.card {
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(56, 189, 248, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.card-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  border-left: 6px solid var(--accent-blue);
+  padding-left: 1rem;
+}
+
+.section-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  color: var(--accent-blue);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.stock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.stock-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  transition: background 0.3s ease;
+}
+
+.stock-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+}
+
+.stock-item-wrapper:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.stock-info .name {
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: 0.25rem;
+}
+
+.stock-info .price {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.stock-status {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+  min-width: 100px;
+  margin-top: 2.5rem; /* 인쇄 버튼 공간 확보 */
+}
+
+.reason-text {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border-left: 3px solid var(--accent-blue);
+  white-space: pre-line; /* 줄바꿈 반영 */
+}
+
+.chart-container {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stock-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+.stock-chart:hover {
+  transform: scale(1.02);
+}
+
+.chart-label {
+  padding: 1rem;
+  font-size: 0.9rem; /* 레이블 텍스트 크기 상향 */
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.prediction-section {
+  width: 100%;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  grid-column: 1 / -1;
+}
+
+.prediction-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prediction-title::before {
+  content: "NEXT-GEN AI";
+  font-size: 0.6rem;
+  padding: 0.1rem 0.5rem;
+  background: #10b981;
+  color: #fff;
+  border-radius: 4px;
+  letter-spacing: 0.05rem;
+}
+
+.dual-prediction-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 사용자 요청: 2개 나란히 꽉 차게 */
+  gap: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.bottom-section {
+  display: contents;
+}
+
+.dual-prediction-grid .chart-container {
+  grid-column: auto;
+  margin-top: 0;
+  border-width: 1px;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+.dual-prediction-grid .stock-chart {
+  width: 100%;
+  height: auto;
+  object-fit: fill; /* 컨테이너 너비에 맞게 채움 */
+  cursor: zoom-in;
+}
+
+.dual-prediction-grid .stock-chart:hover {
+  transform: scale(1.02);
+}
+
+.dual-prediction-grid .chart-label {
+  font-weight: 600;
+  letter-spacing: 0.02rem;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .dual-prediction-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.up {
+  color: var(--up-color) !important;
+}
+.down {
+  color: var(--down-color) !important;
+}
+
+.return {
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+
+.badge {
+  padding: 0.4rem 1rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.05rem;
+}
+
+.badge.hold {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fff;
+  border: 1px solid var(--hold-color);
+}
+.badge.buy {
+  background: rgba(56, 189, 248, 0.2);
+  color: #fff;
+  border: 1px solid var(--accent-blue);
+}
+.badge.sell {
+  background: rgba(244, 63, 94, 0.2);
+  color: #fff;
+  border: 1px solid var(--down-color);
+}
+
+.advice-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.portfolio-wide {
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.9) 0%,
+    rgba(30, 41, 59, 0.8) 100%
+  );
+  /* 탭 버튼(.tabs-container)보다 상단에 렌더링되게 강제 */
+  position: relative;
+  z-index: 100;
+}
+
+.strategy-block {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border-left: 4px solid var(--accent-blue);
+}
+
+.strategy-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  margin-bottom: 0.5rem;
+}
+
+.advice-text strong {
+  color: var(--text-primary);
+  background: linear-gradient(transparent 70%, rgba(56, 189, 248, 0.3) 0);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* [NEW] 탭 스타일 */
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  animation: fadeInDown 0.8s ease-out backwards;
+}
+
+.tab-btn {
+  padding: 0.8rem 2rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-blue);
+}
+
+.tab-btn.active {
+  background: var(--accent-blue);
+  color: #000;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+}
+
+.tab-content {
+  display: none; /* 기본적으로 숨김 */
+}
+
+.tab-content.active {
+  display: block; /* 활성화된 탭만 표시 */
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  body {
+    padding: 2rem 1rem;
+  }
+  header h1 {
+    font-size: 2.5rem;
+  }
+  .tabs-container {
+    flex-direction: row;
+    padding: 0 1rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    flex: 1;
+    text-align: center;
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .card {
+    padding: 1.5rem;
+  }
+}
+
+/* [NEW] 인쇄 버튼 스타일 */
+.print-item {
+  position: relative;
+  /* padding-top: 15px; */
+}
+
+.print-btn {
+  position: absolute;
+  top: 1rem; /* 조금 더 위로 이동하여 공간 확보 */
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.print-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-blue);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.print-btn svg {
+  opacity: 0.7;
+}
+
+.print-btn:hover svg {
+  opacity: 1;
+  stroke: var(--accent-blue);
+}
+
+@media print {
+  .tabs-container,
+  .print-btn,
+  header select,
+  .section-label {
+    display: none !important;
+  }
+}
+
+/* Prediction Badge */
+.prediction-badge {
+  font-size: 0.85rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prediction-badge.up {
+  color: var(--accent-color);
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.prediction-badge.down {
+  color: var(--danger-color);
+  background: rgba(244, 63, 94, 0.1);
+  border-color: rgba(244, 63, 94, 0.2);
+}
+
+/* Tooltip Styles */
+.tooltip-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: help;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 320px;
+  background-color: rgba(15, 23, 42, 0.98);
+  color: #cbd5e1;
+  text-align: left;
+  border-radius: 12px;
+  padding: 16px;
+  position: absolute;
+  z-index: 9999999;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  white-space: normal;
+  pointer-events: auto;
+  backdrop-filter: blur(10px);
+}
+
+.tooltip-text::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background: transparent;
+}
+
+.tooltip-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 0.75rem;
+  display: block;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.tooltip-text b {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* [NEW] Action Summary Section */
+.action-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  /* 툴팁이 탭이나 다른 요소를 뚫고 나올 수 있도록 그리드 자체의 스태킹 레벨을 높여줍니다. */
+  position: relative;
+  z-index: 50;
+}
+
+.action-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: visible !important;
+  /* 카드 자체도 z-index 문맥에서 위쪽으로 띄웁니다. */
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.action-card.buy-action {
+  border-left: 4px solid #10b981; /* Green for Buy */
+  background: linear-gradient(to right, rgba(16, 185, 129, 0.05), transparent);
+}
+
+.action-card.buy-action:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.action-card.sell-action {
+  border-left: 4px solid #f43f5e; /* Red for Sell */
+  background: linear-gradient(to right, rgba(244, 63, 94, 0.05), transparent);
+}
+
+.action-card.sell-action:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(244, 63, 94, 0.2);
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+.action-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.buy-action .action-title {
+  color: #34d399;
+}
+.sell-action .action-title {
+  color: #fb7185;
+}
+
+.action-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.action-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.action-item:last-child {
+  border-bottom: none;
+}
+
+.action-stock-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.action-badge {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .action-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Strategy Toolip Styles */
+.action-item.tooltip-container {
+    position: relative;
+    cursor: help;
+}
+
+.strategy-tooltip {
+    visibility: hidden;
+    width: 340px; /* Slightly wider for list */
+    background-color: rgba(15, 23, 42, 0.98);
+    color: #fff;
+    text-align: left;
+    border-radius: 8px;
+    padding: 1rem;
+    position: absolute;
+    /* 버튼, 탭 등에 가리지 않게 극단적으로 높임 */
+    z-index: 9999999;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.85rem; /* Slightly smaller font for list */
+    line-height: 1.4;
+    pointer-events: auto; /* Allow events inside tooltip (scrolling) */
+}
+
+/* Invisible Bridge to prevent closing on hover */
+.strategy-tooltip::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 15px; /* Covers the margins + buffer */
+    background: transparent;
+}
+
+/* --- Tooltip Up (리스트 아래쪽 아이템 - 툴팁 박스가 글씨 '위'로 열림) --- */
+.tooltip-up .strategy-tooltip, .tooltip-up .tooltip-text {
+    bottom: 110%;
+    margin-bottom: 5px;
+}
+.tooltip-up .strategy-tooltip::before, .tooltip-up .tooltip-text::before {
+    top: 100%; /* Bridge below the tooltip */
+}
+.tooltip-up .strategy-tooltip::after, .tooltip-up .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* 화살표가 툴팁 박스 맨 밑에 붙어서 아래를 향함 */
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px 6px 0 6px;
+    border-style: solid;
+    border-color: rgba(15, 23, 42, 0.98) transparent transparent transparent;
+}
+.tooltip-up:hover .strategy-tooltip, .tooltip-up:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px); /* 호버 시 약간 위로 */
+}
+
+/* --- Tooltip Down (리스트 위쪽 아이템 - 툴팁 박스가 글씨 '아래'로 열림) --- */
+.tooltip-down .strategy-tooltip, .tooltip-down .tooltip-text {
+    top: 110%;
+    margin-top: 5px;
+}
+.tooltip-down .strategy-tooltip::before, .tooltip-down .tooltip-text::before {
+    bottom: 100%; /* Bridge above the tooltip */
+}
+.tooltip-down .strategy-tooltip::after, .tooltip-down .tooltip-text::after {
+    content: "";
+    position: absolute;
+    bottom: 100%; /* 화살표가 툴팁 박스 맨 위에 붙어서 위를 향함 */
+    left: 50%;
+    margin-left: -6px;
+    border-width: 0 6px 6px 6px;
+    border-style: solid;
+    border-color: transparent transparent rgba(15, 23, 42, 0.98) transparent;
+}
+.tooltip-down:hover .strategy-tooltip, .tooltip-down:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(5px); /* 호버 시 약간 아래로 */
+}
+
+/* --- 좌/우 잘림 방지 (가로 축 오프셋 재설정) --- */
+.tooltip-align-right .strategy-tooltip, .tooltip-align-right .tooltip-text {
+    left: auto;
+    right: 0;
+    transform: none !important; /* 가운데 정렬(translateX) 강제 해제 */
+}
+.tooltip-align-right .strategy-tooltip::after, .tooltip-align-right .tooltip-text::after {
+    left: auto;
+    right: 20px;
+    margin-left: 0;
+}
+
+.tooltip-align-left .strategy-tooltip, .tooltip-align-left .tooltip-text {
+    left: 0;
+    right: auto;
+    transform: none !important; /* 가운데 정렬 강제 해제 */
+}
+.tooltip-align-left .strategy-tooltip::after, .tooltip-align-left .tooltip-text::after {
+    left: 20px;
+    margin-left: 0;
+}
+/* 우측/좌측 정렬일 때 호버 애니메이션 미세 보정 (좌우가 고정되어 상하로만 이동) */
+.tooltip-up.tooltip-align-right:hover .strategy-tooltip, .tooltip-up.tooltip-align-right:hover .tooltip-text,
+.tooltip-up.tooltip-align-left:hover .strategy-tooltip, .tooltip-up.tooltip-align-left:hover .tooltip-text {
+    transform: translateY(-5px) !important;
+}
+.tooltip-down.tooltip-align-right:hover .strategy-tooltip, .tooltip-down.tooltip-align-right:hover .tooltip-text,
+.tooltip-down.tooltip-align-left:hover .strategy-tooltip, .tooltip-down.tooltip-align-left:hover .tooltip-text {
+    transform: translateY(5px) !important;
+}
+
+.tooltip-header {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem; /* Reduced from 0.8rem */
+    color: var(--accent-blue);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.3rem; 
+}
+
+.tooltip-body {
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+    white-space: normal;
+}
+
+/* [NEW] Structured Tooltip Styles */
+.tooltip-section {
+    margin-bottom: 0.6rem; /* Reduced from 1rem */
+}
+
+.tooltip-section:last-child {
+    margin-bottom: 0;
+}
+
+.tooltip-subtitle {
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.2rem; /* Reduced from 0.4rem */
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.advice-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.advice-list li {
+    padding: 0.15rem 0; /* Reduced padding */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.advice-list li:last-child {
+    border-bottom: none;
+}
+
+.prediction-text {
+    font-style: italic;
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.4rem; /* Slightly reduced */
+    border-radius: 4px;
+}
+
+/* Scrollbar for tooltip */
+.tooltip-body::-webkit-scrollbar {
+    width: 4px;
+}
+.tooltip-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+/* ===== AI Expert Dashboard Components ===== */
+
+/* Market Regime Banner */
+.regime-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.03rem;
+    animation: fadeInDown 0.6s ease-out;
+}
+.regime-banner .regime-icon { font-size: 1.3rem; }
+.regime-banner .regime-label { font-size: 0.85rem; font-weight: 600; opacity: 0.85; }
+
+.regime-banner.regime-bull {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(52, 211, 153, 0.08));
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #34d399;
+}
+.regime-banner.regime-bear {
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(251, 113, 133, 0.08));
+    border: 1px solid rgba(244, 63, 94, 0.35);
+    color: #fb7185;
+}
+.regime-banner.regime-chop {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(252, 211, 77, 0.08));
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    color: #fbbf24;
+}
+.regime-banner.regime-lowvol {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(129, 140, 248, 0.08));
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    color: #818cf8;
+}
+.regime-banner.regime-transition {
+    background: linear-gradient(135deg, rgba(148, 163, 184, 0.15), rgba(203, 213, 225, 0.08));
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    color: #94a3b8;
+}
+
+/* MFC + AI Info Strip (per stock) */
+.ai-info-strip {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* MFC Gauge (circular) */
+.mfc-gauge {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
+.mfc-gauge-inner {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 1;
+}
+.mfc-gauge-value {
+    font-size: 0.85rem;
+    font-weight: 800;
+    line-height: 1;
+}
+.mfc-gauge-label {
+    font-size: 0.45rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    opacity: 0.7;
+}
+
+/* MFC Breakdown mini bars */
+.mfc-breakdown {
+    display: flex;
+    gap: 0.35rem;
+    flex-direction: column;
+}
+.mfc-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.mfc-bar-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    width: 18px;
+    text-align: right;
+    text-transform: uppercase;
+}
+.mfc-bar-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 80px;
+}
+.mfc-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+}
+
+/* Position Badge */
+.position-badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    white-space: nowrap;
+    text-align: center;
+    flex-shrink: 0;
+}
+.position-badge.high { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+.position-badge.mid  { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+.position-badge.low  { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+/* Cross-Correlation bars */
+.corr-strip {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    flex-wrap: wrap;
+}
+.corr-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+}
+.corr-label { font-weight: 600; min-width: 28px; }
+.corr-bar-track {
+    width: 40px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+.corr-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+}
+.corr-value { font-weight: 600; min-width: 32px; }
+
+/* formatText heading highlights for MFC/Regime */
+.reason-text h4[style*="color"] {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .ai-info-strip {
+        grid-template-columns: auto 1fr;
+        gap: 0.75rem;
+    }
+    .mfc-gauge { width: 48px; height: 48px; }
+    .mfc-gauge-inner { width: 36px; height: 36px; }
+    .mfc-gauge-value { font-size: 0.75rem; }
+}
+
+/* [NEW] Technical Indicators Grid Styles */
+.tech-indicators-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tech-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* [NEW] Wyckoff Phase Tracker Styles */
+.wyckoff-tracker {
+  margin-top: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stepper-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.wyckoff-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.step-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #334155;
+  border: 3px solid #1e293b;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.step-line {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #334155;
+  z-index: -1;
+}
+
+.step-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748b;
+  text-align: center;
+}
+
+/* Active Phase */
+.wyckoff-step.active .step-circle {
+  background: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+.wyckoff-step.active .step-label {
+  color: #38bdf8;
+}
+
+/* Completed Phase */
+.wyckoff-step.completed .step-circle {
+  background: #10b981;
+  border-color: #064e3b;
+}
+.wyckoff-step.completed .step-line {
+  background: #10b981;
+}
+.wyckoff-step.completed .step-label {
+  color: #10b981;
+}
+
+/* [NEW] Extra Gauges Container Styles */
+.extra-gauges-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gauge-block {
+  flex: 1;
+  min-width: 150px;
+}
+
+@media (max-width: 768px) {
+  .extra-gauges-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* [NEW] Gauge Animations */
+@keyframes fillGauge {
+  from { width: 0; opacity: 0; }
+  to { opacity: 1; }
+}
+
+.thermometer-fill, .upside-fill {
+  animation: fillGauge 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: left;
+}
+
+/* ===== Today's Picks (오늘의 추천 종목) ===== */
+.todays-picks-section {
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.todays-picks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.todays-picks-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.todays-picks-subtitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.todays-picks-grid {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom Scrollbar for horizontal grids */
+.todays-picks-grid::-webkit-scrollbar,
+.discovery-picks-grid::-webkit-scrollbar {
+  height: 8px;
+}
+.todays-picks-grid::-webkit-scrollbar-track,
+.discovery-picks-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+}
+.todays-picks-grid::-webkit-scrollbar-thumb,
+.discovery-picks-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+.todays-picks-grid::-webkit-scrollbar-thumb:hover,
+.discovery-picks-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.pick-card {
+  position: relative;
+  min-width: 280px;
+  max-width: 340px;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95) 0%,
+    rgba(30, 41, 59, 0.85) 100%
+  );
+  border: 1px solid rgba(251, 191, 36, 0.15);
+  border-radius: 20px;
+  padding: 1.5rem;
+  backdrop-filter: blur(16px);
+  overflow: visible;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.pick-card:nth-child(1) { animation-delay: 0.1s; }
+.pick-card:nth-child(2) { animation-delay: 0.2s; }
+.pick-card:nth-child(3) { animation-delay: 0.3s; }
+
+.pick-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #fbbf24, #f97316, #ef4444);
+  opacity: 0.8;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.pick-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(251, 191, 36, 0.35);
+  box-shadow: 0 12px 40px rgba(251, 191, 36, 0.12);
+}
+
+.pick-card-rank {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+.pick-card-rank.rank-1 {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #000;
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.5);
+}
+
+.pick-card-rank.rank-2 {
+  background: linear-gradient(135deg, #94a3b8, #cbd5e1);
+  color: #0f172a;
+  box-shadow: 0 0 12px rgba(148, 163, 184, 0.4);
+}
+
+.pick-card-rank.rank-3 {
+  background: linear-gradient(135deg, #b45309, #d97706);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(180, 83, 9, 0.4);
+}
+
+.pick-card-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+
+.pick-card-price {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.pick-card-price .change-up { color: #34d399; font-weight: 700; }
+.pick-card-price .change-down { color: #fb7185; font-weight: 700; }
+
+.pick-score-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pick-score-gauge {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pick-score-inner {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.pick-score-value {
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.pick-score-label {
+  font-size: 0.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-top: 1px;
+}
+
+.pick-factors {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pick-factor-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+}
+
+.pick-factor-icon {
+  width: 14px;
+  text-align: center;
+}
+
+.pick-factor-name {
+  color: var(--text-secondary);
+  width: 55px;
+  font-weight: 600;
+}
+
+.pick-factor-bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pick-factor-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pick-factor-val {
+  font-weight: 700;
+  min-width: 26px;
+  text-align: right;
+  font-size: 0.65rem;
+}
+
+.pick-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.pick-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.pick-tag.positive { color: #34d399; border-color: rgba(52, 211, 153, 0.25); }
+.pick-tag.negative { color: #fb7185; border-color: rgba(251, 113, 133, 0.25); }
+.pick-tag.neutral  { color: #fbbf24; border-color: rgba(251, 191, 36, 0.25); }
+
+.pick-card-reason {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 768px) {
+  .todays-picks-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+/* ===== Discovery Picks (외부 발굴 종목) ===== */
+.discovery-picks-section {
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.8s ease-out 0.3s backwards;
+}
+
+.discovery-picks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.discovery-picks-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.discovery-picks-subtitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.discovery-picks-grid {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.discovery-card {
+  position: relative;
+  min-width: 280px;
+  max-width: 320px;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95) 0%,
+    rgba(30, 41, 59, 0.85) 100%
+  );
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  border-radius: 20px;
+  padding: 1.5rem;
+  backdrop-filter: blur(16px);
+  overflow: visible;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.discovery-card.tooltip-container {
+  display: block; /* Override tooltip-container's inline-flex */
+}
+
+.discovery-card:nth-child(1) { animation-delay: 0.15s; }
+.discovery-card:nth-child(2) { animation-delay: 0.25s; }
+.discovery-card:nth-child(3) { animation-delay: 0.35s; }
+.discovery-card:nth-child(4) { animation-delay: 0.45s; }
+.discovery-card:nth-child(5) { animation-delay: 0.55s; }
+
+.discovery-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+  opacity: 0.8;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.discovery-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.2);
+}
+
+.discovery-card-rank {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 0.75rem;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.discovery-card-ticker {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #818cf8;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.1rem;
+}
+
+.discovery-card-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+
+.discovery-card-price {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.discovery-score-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.discovery-score-mini {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.discovery-score-mini-inner {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.discovery-mini-bars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.discovery-mini-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.65rem;
+}
+
+.discovery-mini-bar-label {
+  color: var(--text-secondary);
+  width: 16px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.discovery-mini-bar-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.discovery-mini-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.discovery-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.discovery-card-reason {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.discovery-meta {
+  margin-top: 0.75rem;
+  font-size: 0.65rem;
+  color: #475569;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .discovery-picks-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+
+/* ==========================================================
+     [NEW] Discovery Pick Overlay Tooltips
+     (Scrolling Grid 내 Clipping 방지를 위한 내부 오버레이)
+   ========================================================== */
+.discovery-overlay-tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  border-radius: 20px;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  color: #cbd5e1;
+  pointer-events: none;
+}
+
+/* discovery-card hover 시 오버레이 노출 */
+.discovery-card:hover .discovery-overlay-tooltip,
+.pick-card:hover .discovery-overlay-tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.discovery-overlay-tooltip .tooltip-header {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent-blue);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.discovery-overlay-tooltip .tooltip-body {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  padding-right: 5px;
+}
+
+.discovery-overlay-tooltip .tooltip-subtitle {
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.3rem;
+}
+
+.discovery-overlay-tooltip .prediction-text {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.5rem;
+  border-radius: 6px;
+  border-left: 2px solid var(--accent-blue);
+}
+
+/* ── Discovery 카드 MFC 미니바 (6차원) ─────────────────────── */
+.discovery-mini-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 2px 0;
+}
+
+.discovery-mini-bar-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #64748b;
+  width: 18px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.discovery-mini-bar-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.discovery-mini-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* MomQuality (신규 차원) — 보라색 강조 배지 */
+.pick-tag.mom-quality {
+  background: rgba(167, 139, 250, 0.15);
+  color: #a78bfa;
+  border-color: rgba(167, 139, 250, 0.3);
+}
+
+/* Regime / R:R Score — 섹션 분리 강조 */
+.discovery-overlay-tooltip .tooltip-section + .tooltip-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* 글로우 강조 — Regime/R:R 점수 텍스트 */
+.regime-highlight {
+  font-weight: 700;
+  text-shadow: 0 0 6px currentColor;
+}
+
+/* PICK 툴팁 폰트 크기 조정 (더 많은 정보가 들어가므로 약간 축소) */
+.tooltip-text .advice-list li {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  padding: 2px 0;
+}

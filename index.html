@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <div class="date-selector-wrapper">
+                    <select id="date-selector" class="date-select">
+                        <!-- Options will be populated by script.js -->
+                    </select>
+                </div>
+                <div class="user-badge">Stock</div>
+            </div>
+            <h1>Premium Finance Report</h1>
+            <p id="report-overview">보고서 데이터를 불러오는 중입니다...</p>
+        </header>
+
+        <!-- [NEW] 통합 포트폴리오 전략 섹션 (최상단 배치) -->
+        <div id="portfolio-strategy-container" class="card advice-section portfolio-wide" style="animation-delay: 0.1s;">
+            <div class="section-label">Integrated Portfolio Strategy</div>
+            <div id="regime-banner" class="regime-banner" style="display: none;"></div>
+            <div class="card-title">종합 투자 전략 센터</div>
+            <div id="portfolio-advice-content" class="advice-text">
+                <!-- Dynamic Content -->
+                <div class="skeleton-wrapper">
+                    <div class="skeleton-loader small"></div>
+                    <div class="skeleton-loader"></div>
+                    <div class="skeleton-loader"></div>
+                </div>
+            </div>
+            
+            <!-- [NEW] Today's Action Summary -->
+            <div id="action-summary-container" class="action-summary-grid">
+                <!-- Javascript will populate this -->
+            </div>
+        </div>
+
+        <!-- [NEW] 오늘의 추천 종목 섹션 -->
+        <div id="todays-picks-container" class="todays-picks-section">
+            <!-- Dynamic Content from script.js -->
+        </div>
+
+        <!-- [NEW] 외부 발굴 종목 섹션 -->
+        <div id="discovery-picks-us-container" class="discovery-picks-section" style="margin-bottom: 1rem;">
+            <!-- Dynamic Content US from script.js -->
+        </div>
+        <div id="discovery-picks-crypto-container" class="discovery-picks-section" style="margin-bottom: 1rem;">
+            <!-- Dynamic Content Crypto from script.js -->
+        </div>
+        <div id="discovery-picks-kr-container" class="discovery-picks-section">
+            <!-- Dynamic Content KR from script.js -->
+        </div>
+
+        <!-- [NEW] 탭 네비게이션 -->
+        <div class="tabs-container">
+            <button class="tab-btn active" data-target="holdings-section">보유 종목 (Holdings)</button>
+            <button class="tab-btn" data-target="watchlist-section">관심 종목 (Watchlist)</button>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- 보유 종목 섹션 -->
+            <div id="holdings-section" class="card tab-content active" style="animation-delay: 0.1s;">
+                <div class="section-label">Current Portfolio</div>
+                <div class="card-title">보유 종목 분석</div>
+                <div id="holdings-list" class="stock-list">
+                    <!-- Dynamic Content -->
+                    <div class="skeleton-wrapper">
+                        <div class="skeleton-loader large"></div>
+                        <div class="skeleton-loader large"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 관심 종목 섹션 -->
+            <div id="watchlist-section" class="card tab-content" style="animation-delay: 0.2s;">
+                <div class="section-label">Market Watchlist</div>
+                <div class="card-title">관심 종목 분석</div>
+                <div id="watchlist-list" class="stock-list">
+                    <!-- Dynamic Content -->
+                    <div class="skeleton-wrapper">
+                        <div class="skeleton-loader large"></div>
+                        <div class="skeleton-loader large"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.write('<script src="data.js?t=' + Date.now() + '"><\/script>');
+    </script>
+
+    <script>
+        document.write('<script src="script.js?v=' + Date.now() + '"><\/script>');
+    </script>
+</body>
+</html>
