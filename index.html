@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Finance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+    <!-- [NEW] Sticky Top Navigation & Search -->
+    <nav class="sticky-nav">
+        <div class="nav-container">
+            <div class="nav-brand">AI Finance</div>
+            <div class="nav-center-tabs">
+                <a href="#" class="nav-link global-tab active" data-target="view-home">HOME</a>
+                <a href="#" class="nav-link global-tab" data-target="view-dashboard">DASHBOARD</a>
+            </div>
+            <div class="nav-right-actions">
+                <button class="nav-auth-btn log-in">Log In</button>
+                <button class="nav-auth-btn sign-in">Sign In</button>
+                <div class="glossary-wrapper">
+                    <button id="glossary-btn" class="nav-link icon-btn" title="용어 안내">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- [NEW] Scroll to Top Button -->
+    <button id="scrollTopBtn" class="scroll-top-btn" title="Go to top">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <!-- [NEW] Chart Modal Lightbox -->
+    <div id="chart-modal" class="chart-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modal-chart-img" class="modal-chart" src="" alt="Chart Details">
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <div class="date-selector-wrapper">
+                    <select id="date-selector" class="date-select">
+                        <!-- Options will be populated by script.js -->
+                    </select>
+                </div>
+
+                <!-- [NEW] 동적 공간 활용: 거시경제 요약 및 분석 현황 플로팅 베너 -->
+                <div id="header-regime-indicator">
+                    <!-- Content will be injected via JS -->
+                </div>
+
+                <!-- [NEW] Search Wrapper (DASHBOARD 탭 전용) -->
+                <div class="search-wrapper header-search-wrapper">
+                    <input type="text" id="global-search" class="search-input" placeholder="Search ticker or name..."
+                        autocomplete="off">
+                </div>
+
+            </div>
+        </header>
+
+        <div id="view-home" class="page-view active">
+            <!-- [NEW] HOME 화면 메타데이터 (날짜, 환율) -->
+            <div id="home-metadata-container" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: rgba(30, 41, 59, 0.5); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <div class="metadata-item">
+                    <span style="color: #94a3b8; font-size: 0.85rem; display: block; margin-bottom: 0.2rem; font-weight: 600;">Report Date</span>
+                    <strong id="home-date-display" style="color: #e2e8f0; font-size: 1.15rem; letter-spacing: 0.05em;">-</strong>
+                </div>
+                <div class="metadata-item" style="text-align: right;">
+                    <span style="color: #94a3b8; font-size: 0.85rem; display: block; margin-bottom: 0.2rem; font-weight: 600;">Exchange Rate (USD/KRW)</span>
+                    <strong id="home-exchange-rate" style="color: #38bdf8; font-size: 1.15rem; letter-spacing: 0.05em;">-</strong>
+                </div>
+            </div>
+
+            <!-- [NEW] 외부 발굴 종목 섹션 -->
+            <div id="discovery-picks-us-container" class="discovery-picks-section" style="margin-bottom: 1rem;">
+                <!-- Dynamic Content US from script.js -->
+            </div>
+            <div id="discovery-picks-us-value-container" class="discovery-picks-section" style="margin-bottom: 1rem;">
+                <!-- Dynamic Content US Value Growth from script.js -->
+            </div>
+            <div id="discovery-picks-crypto-container" class="discovery-picks-section" style="margin-bottom: 1rem;">
+                <!-- Dynamic Content Crypto from script.js -->
+            </div>
+            <div id="discovery-picks-kr-container" class="discovery-picks-section">
+                <!-- Dynamic Content KR from script.js -->
+            </div>
+        </div>
+
+        <div id="view-dashboard" class="page-view">
+            <!-- [NEW] 대시보드 상단 배치 개요 -->
+            <div class="dashboard-header-zone">
+                <p id="report-overview"
+                    style="text-align: center; margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 1.25rem;">
+                    보고서 데이터를 불러오는 중입니다...</p>
+                
+                <!-- [NEW] Market Pulse (거시 지표 요약 패널) -->
+                <div id="market-pulse-container" class="market-pulse-grid" style="display: none;">
+                    <!-- JavaScript가 동적으로 채움 -->
+                </div>
+            </div>
+
+            <!-- [NEW] 2-Column Grid Wrapper for Strategy & Picks -->
+            <div class="dashboard-top-grid">
+                <!-- 통합 포트폴리오 전략 섹션 (좌측) -->
+                <div id="portfolio-strategy-container" class="card advice-section" style="animation-delay: 0.1s;">
+                    <div class="section-label">Integrated Portfolio Strategy</div>
+                    <div id="regime-banner" class="regime-banner" style="display: none;"></div>
+                    <div class="card-title">종합 투자 전략 센터</div>
+                    <div id="portfolio-advice-content" class="advice-text">
+                        <div class="skeleton-wrapper">
+                            <div class="skeleton-loader small"></div>
+                            <div class="skeleton-loader"></div>
+                            <div class="skeleton-loader"></div>
+                        </div>
+                    </div>
+
+                    <!-- Today's Action Summary -->
+                    <div id="action-summary-container" class="action-summary-grid">
+                        <!-- Javascript will populate this -->
+                    </div>
+                </div>
+
+                <!-- 오늘의 추천 종목 섹션 (우측) -->
+                <div id="todays-picks-container" class="todays-picks-section card" style="animation-delay: 0.15s;">
+                    <div class="section-label">AI Consensus Picks</div>
+                    <div class="card-title" style="margin-bottom: 1rem;">오늘의 최우선 추천 종목</div>
+                    <div id="todays-picks-list" class="picks-list-wrapper">
+                        <!-- Dynamic Content from script.js -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- [NEW] 프리미엄 탭 네비게이션 (Segmented Control) -->
+            <div class="segmented-control-wrapper">
+                <div class="segmented-control">
+                    <button class="segment-btn active" data-target="holdings-section">
+                        보유 종목 <span class="segment-badge" id="holdings-badge">0</span>
+                    </button>
+                    <button class="segment-btn" data-target="watchlist-section">
+                        관심 종목 <span class="segment-badge" id="watchlist-badge">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- 보유 종목 섹션 -->
+                <div id="holdings-section" class="card tab-content active" style="animation-delay: 0.1s;">
+                    <div class="section-label">Current Portfolio</div>
+                    <div class="card-title">보유 종목 분석</div>
+                    <div id="holdings-list" class="stock-list">
+                        <!-- Dynamic Content -->
+                        <div class="skeleton-wrapper">
+                            <div class="skeleton-loader large"></div>
+                            <div class="skeleton-loader large"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 관심 종목 섹션 -->
+                <div id="watchlist-section" class="card tab-content" style="animation-delay: 0.2s;">
+                    <div class="section-label">Market Watchlist</div>
+                    <div class="card-title">관심 종목 분석</div>
+                    <div id="watchlist-list" class="stock-list">
+                        <!-- Dynamic Content -->
+                        <div class="skeleton-wrapper">
+                            <div class="skeleton-loader large"></div>
+                            <div class="skeleton-loader large"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End of view-dashboard -->
+    </div>
+
+    <!-- Glossary Tooltip & Overlay (Moved to Body root to fix mobile stacking context) -->
+    <div id="glossary-overlay" class="glossary-overlay"></div>
+    <div id="glossary-tooltip" class="glossary-tooltip">
+        <div class="glossary-header">
+            <span>📚 분석 용어 안내</span>
+            <button id="glossary-close-btn" class="glossary-close-btn">&times;</button>
+        </div>
+        <div class="glossary-search-container">
+            <input type="text" id="glossary-search-input" placeholder="용어 또는 키워드 검색..." autocomplete="off">
+            <svg class="search-icon-inside" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+                stroke-width="2" fill="none">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </div>
+        <div id="glossary-scroll-area" class="glossary-content">
+            <div id="glossary-no-results" class="glossary-no-results" style="display: none;">
+                📡 검색 결과가 없습니다.
+            </div>
+            <div class="glossary-category">🤖 AI / Quant</div>
+            <div class="glossary-item"><b>MFC</b>: Multi-Factor Composite. 8차원 데이터(추세, 모멘텀, 수급 등) 기반 주가 상승 잠재력 평가 점수
+            </div>
+            <div class="glossary-item"><b>PICK</b>: AI 예측치에 거시경제, 기술적 가산점을 결합한 최종 투자 매력도 판단 점수</div>
+            <div class="glossary-item"><b>T+N</b>: 거래일(T) 기준 N일 뒤의 예측 시점 (예: T+15는 영업일 기준 약 3주 후)</div>
+            <div class="glossary-item"><b>GARCH-Ensemble</b>: 과거 변동성 패턴(GARCH)과 AI 머신러닝 예측을 결합해 미래 궤적을 그리는 모델</div>
+
+            <div class="glossary-category">📊 Technical (차트/기술)</div>
+            <div class="glossary-item"><b>Wyckoff Phase</b>: 시장 주기 단계. Accumulation(매집), Markup(상승), Distribution(분산),
+                Markdown(하락)</div>
+            <div class="glossary-item"><b>POC</b>: Point of Control. 특정 기간 동안 가장 많은 거래가 일어난 가격대 (강력한 지지/저항)</div>
+            <div class="glossary-item"><b>VWAP</b>: 거래량 가중 평균 가격. 기관들의 평균 매수/매도 단가로 활용되는 주요 기준선</div>
+            <div class="glossary-item"><b>ATR</b>: Average True Range. 주식의 평균 변동 폭을 나타내며 손절선 설정 시 활용</div>
+            <div class="glossary-item"><b>RSI Divergence</b>: 주가와 RSI 지표 방향이 엇갈리는 현상 (추세 반전의 강력한 예고 시그널)</div>
+            <div class="glossary-item"><b>Spring / Upthrust</b>: 하락 이탈 후 급반등하는 매수 시그널(Spring), 상승 돌파 후 급락하는 매도
+                시그널(Upthrust)</div>
+            <div class="glossary-item"><b>Stochastic</b>: 주가의 과매수/과매도 수준 및 골든/데드크로스를 판단하는 모멘텀 지표</div>
+            <div class="glossary-item"><b>ADX</b>: 현재 추세가 얼마나 강력한지를 수치화한 지표 (높을수록 강한 추세)</div>
+            <div class="glossary-item"><b>Bollinger Bands</b>: 변동성 범위를 나타내며, 수축(Squeeze) 후 폭발적 발산 움직임을 포착</div>
+            <div class="glossary-item"><b>Ichimoku (일목균형표)</b>: 구름대와 기준선을 통해 지지/저항 및 추세 전환을 입체적으로 분석</div>
+            <div class="glossary-item"><b>Volume Climax</b>: 항복 매도(Panic Sell)나 추세 반전을 예고하는 비정상적 대량 거래량</div>
+
+            <div class="glossary-category">🌐 Macro / Flow (거시/수급)</div>
+            <div class="glossary-item"><b>Market Regime</b>: 현재 시장의 지배적 성격. 시스템은 다음 5가지 레짐을 감지합니다.
+                <ul style="margin-top: 5px; padding-left: 15px; font-size: 0.85rem; color: #94a3b8;">
+                    <li><b>Trending-Bull</b>: 강한 상승 추세. 추세 추종 및 풀 포지션 전략 유효</li>
+                    <li><b>Trending-Bear</b>: 명확한 하락 추세. 현금 비중 확대 및 방어적 대응 (50%)</li>
+                    <li><b>Volatile-Chop</b>: 방향성 없는 큰 변동성. 박스권 매매 및 짧은 손절 대응</li>
+                    <li><b>Low-Vol Compression</b>: 변동성 수렴 상태. 방향성 폭발 대기 및 변동성 매수</li>
+                    <li><b>Transitional</b>: 추세 전환 과도기. 지표 정합성 확인 후 선택적 진입</li>
+                </ul>
+            </div>
+            <div class="glossary-item"><b>CMF</b>: Chaikin Money Flow. 기관 자금의 실제 유입(+) 및 유출(-) 강도를 정교하게 측정하는 지표</div>
+            <div class="glossary-item"><b>OBV</b>: On-Balance Volume. 거래량을 누적하여 수급의 매집(상승) 및 분산(하락)을 판단하는 지표</div>
+            <div class="glossary-item"><b>VIX (공포 지수)</b>: 시장의 불안 심리를 나타내며, 수치가 높을수록 하락 위험 가중</div>
+            <div class="glossary-item"><b>US10Y (미 국채 금리)</b>: 글로벌 자금의 기준 금리. 상승 시 성장주에 강한 하압 압력 작용</div>
+            <div class="glossary-item"><b>Short Interest</b>: 공매도 잔고 비중. 매우 높을 경우 숏 스퀴즈의 재료가 되나, 최근 8% 이상 급증한 경우 하방 압력이 워낙 거세어 AI가 -25점의 <b>강력한 패널티</b>를 부과합니다.</div>
+            <div class="glossary-item"><b>Correlation</b>: 주식과 금리(US10Y), 달러(DXY), 공포지수(VIX) 간의 자산 상관관계</div>
+
+            <div class="glossary-category">🏆 v5 Advanced Metrics (고급 지표)</div>
+            <div class="glossary-item"><b>분석 신뢰도 (Conviction)</b>: 기술적 점수(MFC), 시장 레짐, 손익비를 종합하여 도출한 분석 결과의 확구 수준. (높음/보통/낮음)</div>
+            <div class="glossary-item"><b>현재 수익률 (PnL)</b>: 사용자의 평균 매수가 대비 현재 가격의 실시간 손익률. (보유 종목 전용)</div>
+            <div class="glossary-item"><b>추천 비중 (Position Sizing)</b>: 현재 시장의 변동성과 종목의 리스크 점수를 바탕으로 산출한 포트폴리오 내 권장 투입 비중.</div>
+            <div class="glossary-item"><b>시장 부합도 (Regime Alignment)</b>: 현재 탐지된 시장의 성격(상승장/조정장 등)과 해당 종목의 기술적 움직임이 얼마나 동조화되어 있는지 나타내는 점수.</div>
+            <div class="glossary-item"><b>손익비 (Risk/Reward)</b>: 예상되는 상승 수익 대비 감수해야 할 하방 리스크의 비율을 점수화한 지표.</div>
+            <div class="glossary-item"><b>모멘텀 품질 (Momentum Quality)</b>: 단순히 오르는 것뿐만 아니라, 거래량과 매수세의 견고함을 통해 추세의 지속 가능성을 평가한 점수.</div>
+
+            <div class="glossary-category">💡 Strategic (전략/조언)</div>
+            <div class="glossary-item"><b>Macro Override</b>: 차트 시그널이 좋아도 매크로 위험이 크면 보수적으로 대응하는 원칙</div>
+            <div class="glossary-item"><b>Position Sizing</b>: 리스크 관리를 위해 전체 자산 대비 해당 종목에 투입할 비중 조절</div>
+            <div class="glossary-item"><b>Deep Value</b>: 기업 가치 대비 주가가 지나치게 하락하여 반등 가능성이 높은 낙폭과대 구간</div>
+            <div class="glossary-item"><b>Earnings Play</b>: 실적 발표 전후의 변동성을 활용하거나 결과에 따라 기계적으로 대응하는 전략</div>
+            <div class="glossary-item"><b>Tactical Hold</b>: 하방 리스크가 남은 구간에서 추가 매수 없이 비중을 유지하며 기회를 엿보는 전술</div>
+            <div class="glossary-item"><b>Liquidity Sweep</b>: 특정 가격대의 유동성(매물)을 소화한 후 방향을 급격히 트는 움직임</div>
+            <div class="glossary-item"><b>Dilution (가치 희석)</b>: 증자 등으로 주식수가 늘어나 기존 주주의 가치가 낮아지는 리스크</div>
+        </div>
+    </div>
+
+    <script>
+        document.write('<script src="data.js?t=' + Date.now() + '"><\/script>');
+    </script>
+
+    <script>
+        document.write('<script src="script.js?v=' + Date.now() + '"><\/script>');
+    </script>
+</body>
+
+</html>
