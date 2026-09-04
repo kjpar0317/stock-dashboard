@@ -1,0 +1,175 @@
+{
+  "timestamp": "2026-05-11 23:48:20",
+  "quotes": {
+    "^KS11": {
+      "price": null,
+      "change": null,
+      "display_name": "KOSPI"
+    },
+    "^KQ11": {
+      "price": null,
+      "change": null,
+      "display_name": "KOSDAQ"
+    },
+    "^GSPC": {
+      "price": 7411.2001953125,
+      "change": null,
+      "display_name": "S&P 500"
+    },
+    "^IXIC": {
+      "price": 26258.125,
+      "change": null,
+      "display_name": "NASDAQ"
+    },
+    "BTC-USD": {
+      "price": 80732.28125,
+      "change": -1.807234639854868,
+      "display_name": "BTC/USD"
+    },
+    "USDKRW=X": {
+      "price": null,
+      "change": null,
+      "display_name": "USD/KRW"
+    },
+    "CDXS": {
+      "price": 2.75,
+      "change": null,
+      "display_name": null
+    },
+    "UMC": {
+      "price": 15.571399688720703,
+      "change": null,
+      "display_name": null
+    },
+    "001800.KS": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "SLDP": {
+      "price": 3.125,
+      "change": null,
+      "display_name": null
+    },
+    "027410.KS": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "049960.KQ": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "001780.KS": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "U": {
+      "price": 26.079999923706055,
+      "change": null,
+      "display_name": null
+    },
+    "QBTS": {
+      "price": 23.850000381469727,
+      "change": null,
+      "display_name": null
+    },
+    "014910.KS": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "BYND": {
+      "price": 0.8205000162124634,
+      "change": null,
+      "display_name": null
+    },
+    "417010.KQ": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "018880.KS": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "ETH-USD": {
+      "price": 2310.3798828125,
+      "change": -2.5567320618937157,
+      "display_name": null
+    },
+    "SERV": {
+      "price": 8.779999732971191,
+      "change": null,
+      "display_name": null
+    },
+    "018250.KS": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "IONQ": {
+      "price": 56.76499938964844,
+      "change": null,
+      "display_name": null
+    },
+    "BURU": {
+      "price": 0.23489999771118164,
+      "change": null,
+      "display_name": null
+    },
+    "AMSC": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "085670.KQ": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "QS": {
+      "price": 8.0649995803833,
+      "change": null,
+      "display_name": null
+    },
+    "SMR": {
+      "price": 13.164999961853027,
+      "change": null,
+      "display_name": null
+    },
+    "SOUN": {
+      "price": 8.429900169372559,
+      "change": null,
+      "display_name": null
+    },
+    "LAES": {
+      "price": 2.9900999069213867,
+      "change": null,
+      "display_name": null
+    },
+    "453450.KQ": {
+      "price": null,
+      "change": null,
+      "display_name": null
+    },
+    "BBAI": {
+      "price": 4.275000095367432,
+      "change": null,
+      "display_name": null
+    },
+    "PLUG": {
+      "price": 3.5250000953674316,
+      "change": null,
+      "display_name": null
+    },
+    "FIG": {
+      "price": 20.450000762939453,
+      "change": null,
+      "display_name": null
+    }
+  }
+}
