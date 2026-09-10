@@ -1,0 +1,819 @@
+        <div id="view-kis-trade" class="page-view">
+            <div class="section-label-container" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="section-label" style="margin-bottom: 0;">KIS INVESTMENT TRADE CONSOLE</div>
+                    <!-- 모의투자/실전계좌 상태 배지 -->
+                    <span id="kis-account-status-badge" style="padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3); transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.25rem;">🛡️ 모의 계좌 모드</span>
+                </div>
+                <div class="kis-header-controls" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <!-- 글로벌 모의/실전계좌 스위칭 토글 -->
+                    <div class="kis-account-mode-switcher" style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 4px 10px;">
+                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: bold;">모의투자</span>
+                        <label class="switch-toggle" style="position: relative; display: inline-block; width: 34px; height: 18px; margin: 0;">
+                            <input type="checkbox" id="kis-global-real-toggle" style="opacity: 0; width: 0; height: 0;">
+                            <span class="slider-round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #475569; transition: .4s; border-radius: 34px;"></span>
+                        </label>
+                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: bold;">실전계좌</span>
+                    </div>
+                    
+                    <!-- KRW/USD 통화 토글 스위치 -->
+                    <div class="kis-currency-selector" style="display: flex; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 2px;">
+                        <button id="kis-curr-krw" class="segment-btn active" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 6px; font-weight: bold; cursor: pointer; transition: all 0.2s;">KRW (₩)</button>
+                        <button id="kis-curr-usd" class="segment-btn" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 6px; font-weight: bold; cursor: pointer; transition: all 0.2s;">USD ($)</button>
+                    </div>
+                    <!-- 우측 상단 동기화 버튼 -->
+                    <button id="kis-header-sync-btn" class="wiki-btn primary" title="실시간 잔고 및 거래내역 동기화" style="padding: 6px 12px; font-size: 0.8rem; display: flex; align-items: center; gap: 0.25rem; font-weight: bold; border-radius: 8px; cursor: pointer;">
+                        🔄 동기화
+                    </button>
+                </div>
+            </div>
+            
+            
+            <div id="kis-coming-soon-banner" class="kis-coming-soon-banner">
+                <strong>🚧 일부 기능 준비 중</strong> — AI 자동매매 봇, 지정가·주문취소, 국내주식 주문, WebSocket 실시간 체결 등은 순차 오픈 예정입니다. 현재는 잔고·시장가 주문·시세 조회를 지원합니다.
+            </div>
+
+            <!-- KIS TRADE 서브탭 네비게이션 -->
+            <div class="trade-sub-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; overflow-x: auto;">
+                <button class="segment-btn kis-sub-tab active" data-sub-target="kis-sub-overview" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; background: transparent; border: none; color: #94a3b8; transition: all 0.2s;">📊 Overview (계좌 요약)</button>
+                <button class="segment-btn kis-sub-tab" data-sub-target="kis-sub-holdings" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; background: transparent; border: none; color: #94a3b8; transition: all 0.2s;">💼 Holdings (보유 잔고)</button>
+                <button class="segment-btn kis-sub-tab" data-sub-target="kis-sub-orders" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; background: transparent; border: none; color: #94a3b8; transition: all 0.2s;">📝 Orders (주문 콘솔)</button>
+                <button class="segment-btn kis-sub-tab" data-sub-target="kis-sub-journal" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; background: transparent; border: none; color: #94a3b8; transition: all 0.2s;">📈 Journal (투자 분석)</button>
+            </div>
+
+            <!-- 서브탭 1: OVERVIEW -->
+            <div id="kis-sub-overview" class="kis-sub-view active-view">
+                <!-- 계좌 요약 그리드 -->
+                <div class="trade-account-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: var(--accent-blue);">TOTAL ASSETS</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">총 평가 자산</div>
+                        <div class="compare-flow" id="kis-total-assets" style="font-size: 1.6rem; font-weight: 800; color: #ffffff; margin-top: 0.5rem;">$0.00</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #94a3b8;">CASH BALANCE</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">예수금 잔고</div>
+                        <div class="compare-flow" id="kis-cash-balance" style="font-size: 1.6rem; font-weight: 800; color: #38bdf8; margin-top: 0.5rem;">$0.00</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #34d399;">TOTAL PROFIT/LOSS</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">총 평가 손익</div>
+                        <div class="compare-flow" id="kis-total-pnl" style="font-size: 1.6rem; font-weight: 800; color: #34d399; margin-top: 0.5rem;">+$0.00</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #a78bfa;">TOTAL RETURN RATE</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">총 포트폴리오 수익률</div>
+                        <div class="compare-flow" id="kis-total-return" style="font-size: 1.6rem; font-weight: 800; color: #a78bfa; margin-top: 0.5rem;">+0.00%</div>
+                    </div>
+                </div>
+
+                <div class="wiki-container-grid" style="grid-template-columns: 1fr 320px; gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- 자산 추이 차트 -->
+                    <div class="card compare-market-card" style="padding: 1.5rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                            <div class="section-label" style="color: var(--accent-blue);">📈 PORTFOLIO ASSETS TREND (자산 변동 추이)</div>
+                            <div class="segmented-control" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 2px; display: flex; gap: 2px; font-size: 0.75rem;">
+                                <button class="segment-btn kis-chart-period active" data-period="7" style="padding: 3px 8px; border-radius: 4px;">1W</button>
+                                <button class="segment-btn kis-chart-period" data-period="30" style="padding: 3px 8px; border-radius: 4px;">1M</button>
+                                <button class="segment-btn kis-chart-period" data-period="90" style="padding: 3px 8px; border-radius: 4px;">3M</button>
+                                <button class="segment-btn kis-chart-period" data-period="all" style="padding: 3px 8px; border-radius: 4px;">ALL</button>
+                            </div>
+                        </div>
+                        <div style="position: relative; height: 260px; width: 100%;" id="kis-pnl-chart-container">
+                            <div id="kis-pnl-chart" style="width: 100%; height: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 리스크 지표 및 스마트 추천 -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <!-- 리스크 메트릭 -->
+                        <div class="card compare-market-card" style="padding: 1.25rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; flex: 1;">
+                            <div class="section-label" style="color: #f87171; margin-bottom: 1rem;">🛡️ RISK METRICS</div>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                    <span style="color: #94a3b8;">최대 낙폭 (MDD)</span>
+                                    <span id="kis-risk-mdd" style="font-weight: bold; color: #f87171;">0.00%</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                    <span style="color: #94a3b8;">주식 노출 비율</span>
+                                    <span id="kis-risk-exposure" style="font-weight: bold; color: #fff;">0.00%</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #94a3b8;">포트폴리오 분산도</span>
+                                    <span id="kis-risk-diversification" style="font-weight: bold; color: #34d399;">양호</span>
+                                </div>
+                                <div style="margin-top: 0.5rem; text-align: center; display: flex; justify-content: center;">
+                                    <canvas id="kis-risk-donut" width="100" height="100" style="max-width: 100px; max-height: 100px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 스마트 오더 추천 -->
+                        <div class="card compare-market-card" style="padding: 1.25rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; flex: 1;">
+                            <div class="section-label" style="color: #38bdf8; margin-bottom: 1rem;">💡 SMART ORDER RECOMMENDATIONS</div>
+                            <div id="kis-smart-recommendations" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 140px; overflow-y: auto;">
+                                <div style="text-align: center; padding: 1rem; color: #94a3b8; font-size: 0.85rem;">추천 주문 내역이 없습니다.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 서브탭 2: HOLDINGS -->
+            <div id="kis-sub-holdings" class="kis-sub-view" style="display: none;">
+                <div class="card compare-market-card" style="padding: 1.5rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                        <div>
+                            <div class="section-label" style="color: #34d399;">📊 MY HOLDINGS BALANCE (국내·해외 통합 잔고)</div>
+                            <div id="kis-holdings-count" style="font-size: 0.72rem; color: #64748b; margin-top: 0.25rem;">전체 0 · 국내 0 · 해외 0</div>
+                        </div>
+                        <div class="segmented-control kis-market-filter-group" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                            <button class="segment-btn kis-market-filter active" data-market="ALL" style="padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">전체</button>
+                            <button class="segment-btn kis-market-filter" data-market="KR" style="padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">국내</button>
+                            <button class="segment-btn kis-market-filter" data-market="US" style="padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">해외</button>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="holdings-table">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #94a3b8;">
+                                    <th style="padding: 0.75rem 0.5rem;">종목</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">수량</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">평입가</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">현재가</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">평가액</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">평가손익</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">수익률</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: center;">대응</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kis-holdings-tbody">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 2rem; color: #94a3b8;">보유 중인 주식이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 서브탭 3: ORDERS -->
+            <!-- 서브탭 3: ORDERS -->
+            <div id="kis-sub-orders" class="kis-sub-view kis-orders-compact" style="display: none;">
+                <!-- 상단: 좌(주문) · 중앙(차트+지표) · 우(고래+AI봇) — 3열 하단 정렬 -->
+                <div class="wiki-container-grid kis-orders-top-grid">
+                    <!-- 좌: 주문 + AI 보좌관 -->
+                    <div class="kis-orders-left-col">
+                        <!-- 주문 패널 -->
+                        <div class="card module-control-panel kis-order-form-card">
+                            <!-- 티커 입력 -->
+                            <div class="advanced-form-group" style="margin-bottom: 1rem;">
+                                <label for="kis-order-symbol" style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">해외 주식 종목코드 (티커)</label>
+                                <input type="text" id="kis-order-symbol" placeholder="예: AAPL, TSLA" style="width: 100%; padding: 0.65rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; text-transform: uppercase; font-weight: bold; font-size: 0.95rem;">
+                            </div>
+
+                            <!-- BUY / SELL segment -->
+                            <div class="advanced-form-group" style="margin-bottom: 1rem;">
+                                <label style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">매매 주문 종류</label>
+                                <div class="segmented-control" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                                    <button class="segment-btn kis-side-btn active" data-side="BUY" style="flex: 1; padding: 0.4rem; font-size: 0.8rem; font-weight: bold; border-radius: 6px;">BUY (매수)</button>
+                                    <button class="segment-btn kis-side-btn" data-side="SELL" style="flex: 1; padding: 0.4rem; font-size: 0.8rem; font-weight: bold; border-radius: 6px;">SELL (매도)</button>
+                                </div>
+                            </div>
+
+                            <!-- 시장가 / 지정가 segment -->
+                            <div class="advanced-form-group" style="margin-bottom: 1rem;">
+                                <label style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">호가 구분</label>
+                                <div class="segmented-control" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                                    <button class="segment-btn kis-type-btn active" data-type="MARKET" style="flex: 1; padding: 0.4rem; font-size: 0.8rem; font-weight: bold; border-radius: 6px;">시장가</button>
+                                    <button class="segment-btn kis-type-btn" data-type="LIMIT" style="flex: 1; padding: 0.4rem; font-size: 0.8rem; font-weight: bold; border-radius: 6px;">지정가</button>
+                                </div>
+                            </div>
+
+                            <!-- 지정가 가격 입력 필드 (기본 숨김) -->
+                            <div class="advanced-form-group" id="kis-price-field" style="margin-bottom: 1rem; display: none;">
+                                <label for="kis-order-price" id="kis-order-price-label" style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">주문 단가 ($)</label>
+                                <input type="number" id="kis-order-price" value="0.00" min="0.01" step="0.01" style="width: 100%; padding: 0.65rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-weight: bold; font-size: 0.95rem; text-align: right;">
+                            </div>
+
+                            <!-- 주문 수량 -->
+                            <div class="advanced-form-group" style="margin-bottom: 1.25rem;">
+                                <label for="kis-order-qty" style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">주문 수량 (주)</label>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <button class="wiki-btn icon-btn" id="kis-qty-minus" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); font-weight: bold; cursor: pointer;">-</button>
+                                    <input type="number" id="kis-order-qty" value="1" min="1" step="1" style="flex: 1; text-align: center; padding: 0.6rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-weight: bold; font-size: 1rem;">
+                                    <button class="wiki-btn icon-btn" id="kis-qty-plus" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); font-weight: bold; cursor: pointer;">+</button>
+                                </div>
+                            </div>
+
+                            <button id="kis-submit-order-btn" style="width: 100%; padding: 0.85rem; border: none; border-radius: 8px; background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); transition: all 0.2s;">
+                                시장가 주문 전송 (BUY)
+                            </button>
+                        </div>
+
+                        <div class="kis-col-bottom-spacer" aria-hidden="true"></div>
+
+                        <!-- AI 주문 보좌관 패널 (하단 정렬) -->
+                        <div id="kis-order-ai-advisory" class="card kis-order-advisory-card kis-col-bottom-panel" style="display: none;">
+                            <div class="kis-order-advisory-head">
+                                <span>🤖 AI 스마트 주문 보좌관</span>
+                                <span id="kis-advisory-status-badge" class="kis-order-advisory-badge">분석 대기</span>
+                            </div>
+                            <div id="kis-advisory-content" class="kis-order-advisory-body">
+                                <div class="kis-advisory-empty">종목을 입력하고 조회하면 AI 실시간 분석 및 추천 매매 가이드가 제공됩니다.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 중앙: 차트 + MFC/PICK/T+1~5 -->
+                    <div class="card kis-order-center-col">
+                        <div class="kis-order-chart-toolbar">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div id="kis-ticker-search-bar" style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="text" id="kis-chart-symbol-input" placeholder="AAPL" style="width: 120px; padding: 0.5rem 0.75rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; text-transform: uppercase; font-weight: bold; font-size: 0.9rem;">
+                                    <button id="kis-chart-search-btn" class="wiki-btn" style="padding: 0.5rem 1rem; font-weight: bold; border-radius: 8px; background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); color: white; cursor: pointer; border: none;">조회</button>
+                                </div>
+                                <div id="kis-realtime-price-panel" style="display: flex; align-items: center; gap: 0.75rem; font-weight: 800; font-size: 1.1rem; color: #fff;">
+                                    <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: normal;">티커를 입력하고 조회해 주세요.</span>
+                                </div>
+                            </div>
+                            <div class="segmented-control" id="kis-chart-period-control" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                                <button class="segment-btn kis-chart-period-btn active" data-period="1d" data-interval="5m" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">1D</button>
+                                <button class="segment-btn kis-chart-period-btn" data-period="5d" data-interval="30m" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">1W</button>
+                                <button class="segment-btn kis-chart-period-btn" data-period="1mo" data-interval="1d" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">1M</button>
+                                <button class="segment-btn kis-chart-period-btn" data-period="3mo" data-interval="1d" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">3M</button>
+                            </div>
+                        </div>
+                        <div class="kis-center-body">
+                            <div class="kis-center-chart-wrap">
+                                <div id="kis-order-chart" class="kis-order-chart-area"></div>
+                            </div>
+                            <div class="kis-center-bottom-stack kis-col-bottom-panel">
+                                <div id="kis-order-chart-analysis" class="kis-order-chart-metrics">
+                                    <div class="kis-metrics-placeholder">종목 조회 후 MFC / PICK · T+1~T+5 예측이 표시됩니다.</div>
+                                </div>
+                                <div id="kis-center-bot-wrap" class="kis-center-bot-wrap">
+                                    <div class="kis-bot-placeholder" style="display:none;">🤖 종목 조회 후 AI 봇 설정이 표시됩니다.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 우: 고래 -->
+                    <div class="kis-orders-right-col">
+                        <div id="kis-whale-panel" class="kis-whale-panel">
+                            <div class="kis-whale-header">
+                                <span>🐳 고래 가격별 매수 비중</span>
+                                <span id="kis-whale-ticker" class="kis-whale-ticker">-</span>
+                            </div>
+                            <div id="kis-whale-depth-rows" class="kis-whale-depth-list">
+                                <div class="kis-whale-placeholder">종목 조회 대기 중...</div>
+                            </div>
+                            <div id="kis-whale-ai-signal" class="kis-whale-ai-signal">
+                                <div class="kis-whale-ai-signal-text">
+                                    <span class="kis-whale-ai-label">AI 매매 신호</span>
+                                    <span id="kis-whale-signal-desc" class="kis-whale-signal-desc">종목 조회 대기 중</span>
+                                </div>
+                                <span id="kis-whale-ai-badge" class="kis-whale-ai-badge">대기</span>
+                            </div>
+                            <div class="kis-whale-feed-title">⚡ 실시간 고래 체결 피드</div>
+                            <div id="kis-whale-feed-list" class="kis-whale-feed-list">
+                                <div class="kis-whale-placeholder">체결 대기 중...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 하단: 미체결/체결 이력 내역 (가로 2열 배치) -->
+                <div class="wiki-container-grid kis-orders-bottom-grid">
+                    <!-- 미체결 주문 (Cancel Order Panel) -->
+                    <div class="card compare-market-card" style="padding: 1.25rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; height: fit-content;">
+                        <div class="section-label" style="color: #f59e0b; margin-bottom: 1rem;">⏳ OPEN ORDERS (미체결 주문 내역)</div>
+                        <div style="overflow-x: auto;">
+                            <table class="advanced-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #94a3b8;">
+                                        <th style="padding: 0.5rem;">시간</th>
+                                        <th style="padding: 0.5rem;">종목</th>
+                                        <th style="padding: 0.5rem;">구분</th>
+                                        <th style="padding: 0.5rem; text-align: right;">가격</th>
+                                        <th style="padding: 0.5rem; text-align: right;">수량</th>
+                                        <th style="padding: 0.5rem; text-align: right;">체결량</th>
+                                        <th style="padding: 0.5rem; text-align: center;">취소</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="kis-open-orders-tbody">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8;">미체결 주문이 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 최근 주문 내역 -->
+                    <div class="card compare-market-card" style="padding: 1.25rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; height: fit-content;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.5rem;">
+                            <div class="section-label" style="color: #a78bfa; margin: 0;">📅 RECENT TRANSACTION LOG (최근 체결/종료 주문 이력)</div>
+                            <div class="segmented-control" id="kis-closed-orders-filter" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                                <button class="segment-btn kis-filter-btn active" data-filter="ALL" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 6px;">전체</button>
+                                <button class="segment-btn kis-filter-btn" data-filter="FILLED" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 6px;">체결</button>
+                                <button class="segment-btn kis-filter-btn" data-filter="CANCELED" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 6px;">취소</button>
+                                <button class="segment-btn kis-filter-btn" data-filter="REJECTED" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 6px;">거부</button>
+                            </div>
+                        </div>
+                        <div style="overflow-x: auto;">
+                            <table class="advanced-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #94a3b8;">
+                                        <th style="padding: 0.5rem;">시간</th>
+                                        <th style="padding: 0.5rem;">종목</th>
+                                        <th style="padding: 0.5rem;">매매</th>
+                                        <th style="padding: 0.5rem; text-align: right;">가격</th>
+                                        <th style="padding: 0.5rem; text-align: right;">수량</th>
+                                        <th style="padding: 0.5rem; text-align: right;">체결량</th>
+                                        <th style="padding: 0.5rem; text-align: center;">상태</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="kis-orders-tbody">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8;">최근 주문 이력이 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 서브탭 4: JOURNAL -->
+            <div id="kis-sub-journal" class="kis-sub-view" style="display: none;">
+                <!-- 저널 요약 카드 -->
+                <div class="trade-account-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #34d399;">WIN RATE</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">종합 승률</div>
+                        <div id="kis-journal-winrate" style="font-size: 1.6rem; font-weight: 800; color: #34d399; margin-top: 0.5rem;">0.00%</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #38bdf8;">TOTAL TRADES</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">총 매매 횟수</div>
+                        <div id="kis-journal-total-trades" style="font-size: 1.6rem; font-weight: 800; color: #fff; margin-top: 0.5rem;">0회</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #fb7185;">PROFIT FACTOR</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">프로핏 팩터</div>
+                        <div id="kis-journal-profit-factor" style="font-size: 1.6rem; font-weight: 800; color: #fb7185; margin-top: 0.5rem;">0.00</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #a78bfa;">REALIZED P&L</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">실현 손익 (Heuristic)</div>
+                        <div id="kis-journal-realized-pnl" style="font-size: 1.6rem; font-weight: 800; color: #ffffff; margin-top: 0.5rem;">$0.00</div>
+                    </div>
+                </div>
+
+                <!-- 저널 상세 통계 및 매매 패턴 -->
+                <div class="wiki-container-grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card compare-market-card" style="padding: 1.5rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;">
+                        <div class="section-label" style="color: var(--accent-blue); margin-bottom: 1.25rem;">📊 TRADE PERFORMANCE METRICS (매매 세부 지표)</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem;">
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                <span style="color: #94a3b8;">익절 거래 수</span>
+                                <span id="kis-journal-wins" style="font-weight: bold; color: #34d399;">0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                <span style="color: #94a3b8;">손절 거래 수</span>
+                                <span id="kis-journal-losses" style="font-weight: bold; color: #fb7185;">0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                <span style="color: #94a3b8;">총 실현 수익</span>
+                                <span id="kis-journal-gross-profit" style="font-weight: bold; color: #34d399;">$0.00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #94a3b8;">총 실현 손실</span>
+                                <span id="kis-journal-gross-loss" style="font-weight: bold; color: #fb7185;">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card compare-market-card" style="padding: 1.5rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;">
+                        <div class="section-label" style="color: #34d399; margin-bottom: 1.25rem;">📈 TRADING STRATEGY ADVICE (AI 저널 피드백)</div>
+                        <div id="kis-journal-feedback" style="font-size: 0.85rem; color: #e2e8f0; line-height: 1.5; height: 120px; overflow-y: auto;">
+                            충분한 거래 데이터가 수집되면 AI가 매매 패턴을 분석하고 리스크 분산 및 매매 규칙 보정을 위한 피드백을 이곳에 제시합니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="view-kis-trade" class="page-view">
+            <div class="section-label-container" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="section-label" style="margin-bottom: 0;">KIS INVESTMENT TRADE CONSOLE</div>
+                    <!-- 모의투자/실전계좌 상태 배지 -->
+                    <span id="kis-account-status-badge" style="padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3); transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.25rem;">🛡️ 모의 계좌 모드</span>
+                </div>
+                <div class="kis-header-controls" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <!-- 글로벌 모의/실전계좌 스위칭 토글 -->
+                    <div class="kis-account-mode-switcher" style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 4px 10px;">
+                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: bold;">모의투자</span>
+                        <label class="switch-toggle" style="position: relative; display: inline-block; width: 34px; height: 18px; margin: 0;">
+                            <input type="checkbox" id="kis-global-real-toggle" style="opacity: 0; width: 0; height: 0;">
+                            <span class="slider-round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #475569; transition: .4s; border-radius: 34px;"></span>
+                        </label>
+                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: bold;">실전계좌</span>
+                    </div>
+                    
+                    <!-- KRW/USD 통화 토글 스위치 -->
+                    <div class="kis-currency-selector" style="display: flex; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 2px;">
+                        <button id="kis-curr-krw" class="segment-btn active" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 6px; font-weight: bold; cursor: pointer; transition: all 0.2s;">KRW (₩)</button>
+                        <button id="kis-curr-usd" class="segment-btn" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 6px; font-weight: bold; cursor: pointer; transition: all 0.2s;">USD ($)</button>
+                    </div>
+                    <!-- 우측 상단 동기화 버튼 -->
+                    <button id="kis-header-sync-btn" class="wiki-btn primary" title="실시간 잔고 및 거래내역 동기화" style="padding: 6px 12px; font-size: 0.8rem; display: flex; align-items: center; gap: 0.25rem; font-weight: bold; border-radius: 8px; cursor: pointer;">
+                        🔄 동기화
+                    </button>
+                </div>
+            </div>
+            
+            <!-- KIS TRADE 서브탭 네비게이션 -->
+            <div class="trade-sub-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; overflow-x: auto;">
+                <button class="segment-btn kis-sub-tab active" data-sub-target="kis-sub-overview" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; background: transparent; border: none; color: #94a3b8; transition: all 0.2s;">📊 Overview (계좌 요약)</button>
+                <button class="segment-btn kis-sub-tab" data-sub-target="kis-sub-holdings" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; background: transparent; border: none; color: #94a3b8; transition: all 0.2s;">💼 Holdings (보유 잔고)</button>
+                <button class="segment-btn kis-sub-tab" data-sub-target="kis-sub-orders" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; background: transparent; border: none; color: #94a3b8; transition: all 0.2s;">📝 Orders (주문 콘솔)</button>
+                <button class="segment-btn kis-sub-tab" data-sub-target="kis-sub-journal" style="padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; background: transparent; border: none; color: #94a3b8; transition: all 0.2s;">📈 Journal (투자 분석)</button>
+            </div>
+
+            <!-- 서브탭 1: OVERVIEW -->
+            <div id="kis-sub-overview" class="kis-sub-view active-view">
+                <!-- 계좌 요약 그리드 -->
+                <div class="trade-account-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: var(--accent-blue);">TOTAL ASSETS</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">총 평가 자산</div>
+                        <div class="compare-flow" id="kis-total-assets" style="font-size: 1.6rem; font-weight: 800; color: #ffffff; margin-top: 0.5rem;">₩0</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #94a3b8;">CASH BALANCE</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">예수금 잔고</div>
+                        <div class="compare-flow" id="kis-cash-balance" style="font-size: 1.6rem; font-weight: 800; color: #38bdf8; margin-top: 0.5rem;">₩0</div>
+                        <div id="kis-cash-detail" style="font-size: 0.72rem; color: #64748b; margin-top: 0.35rem;">국내·해외 예수금 합산</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #34d399;">TOTAL PROFIT/LOSS</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">총 평가 손익</div>
+                        <div class="compare-flow" id="kis-total-pnl" style="font-size: 1.6rem; font-weight: 800; color: #34d399; margin-top: 0.5rem;">+₩0</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #a78bfa;">TOTAL RETURN RATE</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">총 포트폴리오 수익률</div>
+                        <div class="compare-flow" id="kis-total-return" style="font-size: 1.6rem; font-weight: 800; color: #a78bfa; margin-top: 0.5rem;">+0.00%</div>
+                    </div>
+                </div>
+
+                <div class="wiki-container-grid" style="grid-template-columns: 1fr 320px; gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- 자산 추이 차트 -->
+                    <div class="card compare-market-card" style="padding: 1.5rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                            <div class="section-label" style="color: var(--accent-blue);">📈 PORTFOLIO ASSETS TREND (자산 변동 추이)</div>
+                            <div class="segmented-control" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 2px; display: flex; gap: 2px; font-size: 0.75rem;">
+                                <button class="segment-btn kis-chart-period active" data-period="7" style="padding: 3px 8px; border-radius: 4px;">1W</button>
+                                <button class="segment-btn kis-chart-period" data-period="30" style="padding: 3px 8px; border-radius: 4px;">1M</button>
+                                <button class="segment-btn kis-chart-period" data-period="90" style="padding: 3px 8px; border-radius: 4px;">3M</button>
+                                <button class="segment-btn kis-chart-period" data-period="all" style="padding: 3px 8px; border-radius: 4px;">ALL</button>
+                            </div>
+                        </div>
+                        <div style="position: relative; height: 260px; width: 100%;" id="kis-pnl-chart-container">
+                            <div id="kis-pnl-chart" style="width: 100%; height: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 리스크 지표 및 스마트 추천 -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <!-- 리스크 메트릭 -->
+                        <div class="card compare-market-card" style="padding: 1.25rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; flex: 1;">
+                            <div class="section-label" style="color: #f87171; margin-bottom: 1rem;">🛡️ RISK METRICS</div>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                    <span style="color: #94a3b8;">최대 낙폭 (MDD)</span>
+                                    <span id="kis-risk-mdd" style="font-weight: bold; color: #f87171;">0.00%</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                    <span style="color: #94a3b8;">주식 노출 비율</span>
+                                    <span id="kis-risk-exposure" style="font-weight: bold; color: #fff;">0.00%</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #94a3b8;">포트폴리오 분산도</span>
+                                    <span id="kis-risk-diversification" style="font-weight: bold; color: #34d399;">양호</span>
+                                </div>
+                                <div style="margin-top: 0.5rem; text-align: center; display: flex; justify-content: center;">
+                                    <canvas id="kis-risk-donut" width="100" height="100" style="max-width: 100px; max-height: 100px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 스마트 오더 추천 -->
+                        <div class="card compare-market-card" style="padding: 1.25rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; flex: 1;">
+                            <div class="section-label" style="color: #38bdf8; margin-bottom: 1rem;">💡 SMART ORDER RECOMMENDATIONS</div>
+                            <div id="kis-smart-recommendations" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 140px; overflow-y: auto;">
+                                <div style="text-align: center; padding: 1rem; color: #94a3b8; font-size: 0.85rem;">추천 주문 내역이 없습니다.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 서브탭 2: HOLDINGS -->
+            <div id="kis-sub-holdings" class="kis-sub-view" style="display: none;">
+                <div class="card compare-market-card" style="padding: 1.5rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                        <div>
+                            <div class="section-label" style="color: #34d399;">📊 MY HOLDINGS BALANCE (국내·해외 통합 잔고)</div>
+                            <div id="kis-holdings-count" style="font-size: 0.72rem; color: #64748b; margin-top: 0.25rem;">전체 0 · 국내 0 · 해외 0</div>
+                        </div>
+                        <div class="segmented-control kis-market-filter-group" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                            <button class="segment-btn kis-market-filter active" data-market="ALL" style="padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">전체</button>
+                            <button class="segment-btn kis-market-filter" data-market="KR" style="padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">국내</button>
+                            <button class="segment-btn kis-market-filter" data-market="US" style="padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">해외</button>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="advanced-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #94a3b8;">
+                                    <th style="padding: 0.75rem 0.5rem;">종목</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">수량</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">평입가</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">현재가</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">평가액</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">평가손익</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: right;">수익률</th>
+                                    <th style="padding: 0.75rem 0.5rem; text-align: center;">대응</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kis-holdings-tbody">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 2rem; color: #94a3b8;">보유 중인 주식이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 서브탭 3: ORDERS -->
+            <!-- 서브탭 3: ORDERS -->
+            <div id="kis-sub-orders" class="kis-sub-view kis-orders-compact" style="display: none;">
+                <!-- 상단: 좌(주문) · 중앙(차트+지표) · 우(고래+AI봇) — 3열 하단 정렬 -->
+                <div class="wiki-container-grid kis-orders-top-grid">
+                    <!-- 좌: 주문 + AI 보좌관 -->
+                    <div class="kis-orders-left-col">
+                        <!-- 주문 패널 -->
+                        <div class="card module-control-panel kis-order-form-card">
+                            <!-- 티커 입력 -->
+                            <div class="advanced-form-group" style="margin-bottom: 1rem;">
+                                <label for="kis-order-symbol" style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">해외 주식 종목코드 (티커)</label>
+                                <input type="text" id="kis-order-symbol" placeholder="예: AAPL, TSLA" style="width: 100%; padding: 0.65rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; text-transform: uppercase; font-weight: bold; font-size: 0.95rem;">
+                            </div>
+
+                            <!-- BUY / SELL segment -->
+                            <div class="advanced-form-group" style="margin-bottom: 1rem;">
+                                <label style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">매매 주문 종류</label>
+                                <div class="segmented-control" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                                    <button class="segment-btn kis-side-btn active" data-side="BUY" style="flex: 1; padding: 0.4rem; font-size: 0.8rem; font-weight: bold; border-radius: 6px;">BUY (매수)</button>
+                                    <button class="segment-btn kis-side-btn" data-side="SELL" style="flex: 1; padding: 0.4rem; font-size: 0.8rem; font-weight: bold; border-radius: 6px;">SELL (매도)</button>
+                                </div>
+                            </div>
+
+                            <!-- 시장가 / 지정가 segment -->
+                            <div class="advanced-form-group" style="margin-bottom: 1rem;">
+                                <label style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">호가 구분</label>
+                                <div class="segmented-control" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                                    <button class="segment-btn kis-type-btn active" data-type="MARKET" style="flex: 1; padding: 0.4rem; font-size: 0.8rem; font-weight: bold; border-radius: 6px;">시장가</button>
+                                    <button class="segment-btn kis-type-btn" data-type="LIMIT" style="flex: 1; padding: 0.4rem; font-size: 0.8rem; font-weight: bold; border-radius: 6px;">지정가</button>
+                                </div>
+                            </div>
+
+                            <!-- 지정가 가격 입력 필드 (기본 숨김) -->
+                            <div class="advanced-form-group" id="kis-price-field" style="margin-bottom: 1rem; display: none;">
+                                <label for="kis-order-price" id="kis-order-price-label" style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">주문 단가 ($)</label>
+                                <input type="number" id="kis-order-price" value="0.00" min="0.01" step="0.01" style="width: 100%; padding: 0.65rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-weight: bold; font-size: 0.95rem; text-align: right;">
+                            </div>
+
+                            <!-- 주문 수량 -->
+                            <div class="advanced-form-group" style="margin-bottom: 1.25rem;">
+                                <label for="kis-order-qty" style="color: #94a3b8; font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">주문 수량 (주)</label>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <button class="wiki-btn icon-btn" id="kis-qty-minus" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); font-weight: bold; cursor: pointer;">-</button>
+                                    <input type="number" id="kis-order-qty" value="1" min="1" step="1" style="flex: 1; text-align: center; padding: 0.6rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-weight: bold; font-size: 1rem;">
+                                    <button class="wiki-btn icon-btn" id="kis-qty-plus" style="width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); font-weight: bold; cursor: pointer;">+</button>
+                                </div>
+                            </div>
+
+                            <button id="kis-submit-order-btn" style="width: 100%; padding: 0.85rem; border: none; border-radius: 8px; background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); transition: all 0.2s;">
+                                시장가 주문 전송 (BUY)
+                            </button>
+                        </div>
+
+                        <div class="kis-col-bottom-spacer" aria-hidden="true"></div>
+
+                        <!-- AI 주문 보좌관 패널 (하단 정렬) -->
+                        <div id="kis-order-ai-advisory" class="card kis-order-advisory-card kis-col-bottom-panel" style="display: none;">
+                            <div class="kis-order-advisory-head">
+                                <span>🤖 AI 스마트 주문 보좌관</span>
+                                <span id="kis-advisory-status-badge" class="kis-order-advisory-badge">분석 대기</span>
+                            </div>
+                            <div id="kis-advisory-content" class="kis-order-advisory-body">
+                                <div class="kis-advisory-empty">종목을 입력하고 조회하면 AI 실시간 분석 및 추천 매매 가이드가 제공됩니다.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 중앙: 차트 + MFC/PICK/T+1~5 -->
+                    <div class="card kis-order-center-col">
+                        <div class="kis-order-chart-toolbar">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div id="kis-ticker-search-bar" style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="text" id="kis-chart-symbol-input" placeholder="AAPL" style="width: 120px; padding: 0.5rem 0.75rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; text-transform: uppercase; font-weight: bold; font-size: 0.9rem;">
+                                    <button id="kis-chart-search-btn" class="wiki-btn" style="padding: 0.5rem 1rem; font-weight: bold; border-radius: 8px; background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); color: white; cursor: pointer; border: none;">조회</button>
+                                </div>
+                                <div id="kis-realtime-price-panel" style="display: flex; align-items: center; gap: 0.75rem; font-weight: 800; font-size: 1.1rem; color: #fff;">
+                                    <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: normal;">티커를 입력하고 조회해 주세요.</span>
+                                </div>
+                            </div>
+                            <div class="segmented-control" id="kis-chart-period-control" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                                <button class="segment-btn kis-chart-period-btn active" data-period="1d" data-interval="5m" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">1D</button>
+                                <button class="segment-btn kis-chart-period-btn" data-period="5d" data-interval="30m" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">1W</button>
+                                <button class="segment-btn kis-chart-period-btn" data-period="1mo" data-interval="1d" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">1M</button>
+                                <button class="segment-btn kis-chart-period-btn" data-period="3mo" data-interval="1d" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: bold; border-radius: 6px;">3M</button>
+                            </div>
+                        </div>
+                        <div class="kis-center-body">
+                            <div class="kis-center-chart-wrap">
+                                <div id="kis-order-chart" class="kis-order-chart-area"></div>
+                            </div>
+                            <div class="kis-center-bottom-stack kis-col-bottom-panel">
+                                <div id="kis-order-chart-analysis" class="kis-order-chart-metrics">
+                                    <div class="kis-metrics-placeholder">종목 조회 후 MFC / PICK · T+1~T+5 예측이 표시됩니다.</div>
+                                </div>
+                                <div id="kis-center-bot-wrap" class="kis-center-bot-wrap">
+                                    <div class="kis-bot-placeholder" style="display:none;">🤖 종목 조회 후 AI 봇 설정이 표시됩니다.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 우: 고래 -->
+                    <div class="kis-orders-right-col">
+                        <div id="kis-whale-panel" class="kis-whale-panel">
+                            <div class="kis-whale-header">
+                                <span>🐳 고래 가격별 매수 비중</span>
+                                <span id="kis-whale-ticker" class="kis-whale-ticker">-</span>
+                            </div>
+                            <div id="kis-whale-depth-rows" class="kis-whale-depth-list">
+                                <div class="kis-whale-placeholder">종목 조회 대기 중...</div>
+                            </div>
+                            <div id="kis-whale-ai-signal" class="kis-whale-ai-signal">
+                                <div class="kis-whale-ai-signal-text">
+                                    <span class="kis-whale-ai-label">AI 매매 신호</span>
+                                    <span id="kis-whale-signal-desc" class="kis-whale-signal-desc">종목 조회 대기 중</span>
+                                </div>
+                                <span id="kis-whale-ai-badge" class="kis-whale-ai-badge">대기</span>
+                            </div>
+                            <div class="kis-whale-feed-title">⚡ 실시간 고래 체결 피드</div>
+                            <div id="kis-whale-feed-list" class="kis-whale-feed-list">
+                                <div class="kis-whale-placeholder">체결 대기 중...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 하단: 미체결/체결 이력 내역 (가로 2열 배치) -->
+                <div class="wiki-container-grid kis-orders-bottom-grid">
+                    <!-- 미체결 주문 (Cancel Order Panel) -->
+                    <div class="card compare-market-card" style="padding: 1.25rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; height: fit-content;">
+                        <div class="section-label" style="color: #f59e0b; margin-bottom: 1rem;">⏳ OPEN ORDERS (미체결 주문 내역)</div>
+                        <div style="overflow-x: auto;">
+                            <table class="advanced-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #94a3b8;">
+                                        <th style="padding: 0.5rem;">시간</th>
+                                        <th style="padding: 0.5rem;">종목</th>
+                                        <th style="padding: 0.5rem;">구분</th>
+                                        <th style="padding: 0.5rem; text-align: right;">가격</th>
+                                        <th style="padding: 0.5rem; text-align: right;">수량</th>
+                                        <th style="padding: 0.5rem; text-align: right;">체결량</th>
+                                        <th style="padding: 0.5rem; text-align: center;">취소</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="kis-open-orders-tbody">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8;">미체결 주문이 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 최근 주문 내역 -->
+                    <div class="card compare-market-card" style="padding: 1.25rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; height: fit-content;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.5rem;">
+                            <div class="section-label" style="color: #a78bfa; margin: 0;">📅 RECENT TRANSACTION LOG (최근 체결/종료 주문 이력)</div>
+                            <div class="segmented-control" id="kis-closed-orders-filter" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; display: flex; gap: 2px;">
+                                <button class="segment-btn kis-filter-btn active" data-filter="ALL" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 6px;">전체</button>
+                                <button class="segment-btn kis-filter-btn" data-filter="FILLED" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 6px;">체결</button>
+                                <button class="segment-btn kis-filter-btn" data-filter="CANCELED" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 6px;">취소</button>
+                                <button class="segment-btn kis-filter-btn" data-filter="REJECTED" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 6px;">거부</button>
+                            </div>
+                        </div>
+                        <div style="overflow-x: auto;">
+                            <table class="advanced-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #94a3b8;">
+                                        <th style="padding: 0.5rem;">시간</th>
+                                        <th style="padding: 0.5rem;">종목</th>
+                                        <th style="padding: 0.5rem;">매매</th>
+                                        <th style="padding: 0.5rem; text-align: right;">가격</th>
+                                        <th style="padding: 0.5rem; text-align: right;">수량</th>
+                                        <th style="padding: 0.5rem; text-align: right;">체결량</th>
+                                        <th style="padding: 0.5rem; text-align: center;">상태</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="kis-orders-tbody">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8;">최근 주문 이력이 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 서브탭 4: JOURNAL -->
+            <div id="kis-sub-journal" class="kis-sub-view" style="display: none;">
+                <!-- 저널 요약 카드 -->
+                <div class="trade-account-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #34d399;">WIN RATE</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">종합 승률</div>
+                        <div id="kis-journal-winrate" style="font-size: 1.6rem; font-weight: 800; color: #34d399; margin-top: 0.5rem;">0.00%</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #38bdf8;">TOTAL TRADES</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">총 매매 횟수</div>
+                        <div id="kis-journal-total-trades" style="font-size: 1.6rem; font-weight: 800; color: #fff; margin-top: 0.5rem;">0회</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #fb7185;">PROFIT FACTOR</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">프로핏 팩터</div>
+                        <div id="kis-journal-profit-factor" style="font-size: 1.6rem; font-weight: 800; color: #fb7185; margin-top: 0.5rem;">0.00</div>
+                    </div>
+                    <div class="card compare-summary-card">
+                        <div class="section-label" style="color: #a78bfa;">REALIZED P&L</div>
+                        <div class="card-title" style="margin-top: 0.5rem;">실현 손익 (Heuristic)</div>
+                        <div id="kis-journal-realized-pnl" style="font-size: 1.6rem; font-weight: 800; color: #ffffff; margin-top: 0.5rem;">$0.00</div>
+                    </div>
+                </div>
+
+                <!-- 저널 상세 통계 및 매매 패턴 -->
+                <div class="wiki-container-grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card compare-market-card" style="padding: 1.5rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;">
+                        <div class="section-label" style="color: var(--accent-blue); margin-bottom: 1.25rem;">📊 TRADE PERFORMANCE METRICS (매매 세부 지표)</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem;">
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                <span style="color: #94a3b8;">익절 거래 수</span>
+                                <span id="kis-journal-wins" style="font-weight: bold; color: #34d399;">0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                <span style="color: #94a3b8;">손절 거래 수</span>
+                                <span id="kis-journal-losses" style="font-weight: bold; color: #fb7185;">0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.4rem;">
+                                <span style="color: #94a3b8;">총 실현 수익</span>
+                                <span id="kis-journal-gross-profit" style="font-weight: bold; color: #34d399;">$0.00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #94a3b8;">총 실현 손실</span>
+                                <span id="kis-journal-gross-loss" style="font-weight: bold; color: #fb7185;">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card compare-market-card" style="padding: 1.5rem; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;">
+                        <div class="section-label" style="color: #34d399; margin-bottom: 1.25rem;">📈 TRADING STRATEGY ADVICE (AI 저널 피드백)</div>
+                        <div id="kis-journal-feedback" style="font-size: 0.85rem; color: #e2e8f0; line-height: 1.5; height: 120px; overflow-y: auto;">
+                            충분한 거래 데이터가 수집되면 AI가 매매 패턴을 분석하고 리스크 분산 및 매매 규칙 보정을 위한 피드백을 이곳에 제시합니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- [QUANT LAB] STRATEGY LAB 탭 (기존 BACKTEST 대체) -->
+
+        <!-- [QUANT LAB] STRATEGY LAB 탭 (기존 BACKTEST 대체) -->
