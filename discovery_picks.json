@@ -1,0 +1,859 @@
+{
+  "date": "2026-03-14",
+  "generated_at": "2026-03-14 11:37:37",
+  "total_screened": 76,
+  "total_valid_kr": 10,
+  "total_valid_us": 65,
+  "picks_kr": [
+    {
+      "ticker": "035420.KS",
+      "name": "NAVER",
+      "price": "223,000원",
+      "change_pct": 0.45,
+      "rec_score": 71.2,
+      "mfc_score": 40.6,
+      "mfc_breakdown": {
+        "trend": 0,
+        "momentum": 34.2,
+        "flow": 55.0,
+        "volatility": 60.0,
+        "structure": 80
+      },
+      "phase": "Accumulation",
+      "rating": "Aggressive Buy",
+      "advice_short": "매수 우위 (기술적 매수 - 단기 낙폭 과대에 따른 반발 매수 포착)",
+      "rsi": 39.2,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "하단",
+      "ma_alignment": "역배열",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        },
+        {
+          "text": "RSI 상승 다이버전스",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 41,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "005930.KS",
+      "name": "SamsungElec",
+      "price": "183,500원",
+      "change_pct": -2.34,
+      "rec_score": 67.0,
+      "mfc_score": 55.0,
+      "mfc_breakdown": {
+        "trend": 75,
+        "momentum": 45.9,
+        "flow": 30.0,
+        "volatility": 60.0,
+        "structure": 65
+      },
+      "phase": "Accumulation",
+      "rating": "Tactical Hold",
+      "advice_short": "중립 대기 (거래 대금 급감, 뚜렷한 주도력 부재)",
+      "rsi": 51.8,
+      "stoch_golden": true,
+      "obv_trend": "하락",
+      "bollinger": "하단",
+      "ma_alignment": "혼합",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 55,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 0,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "000660.KS",
+      "name": "SK hynix",
+      "price": "910,000원",
+      "change_pct": -2.15,
+      "rec_score": 65.8,
+      "mfc_score": 51.9,
+      "mfc_breakdown": {
+        "trend": 75,
+        "momentum": 45.4,
+        "flow": 15.0,
+        "volatility": 60.0,
+        "structure": 65
+      },
+      "phase": "Accumulation",
+      "rating": "Tactical Hold",
+      "advice_short": "중립 대기 (거래 대금 급감, 뚜렷한 주도력 부재)",
+      "rsi": 50.8,
+      "stoch_golden": true,
+      "obv_trend": "하락",
+      "bollinger": "하단",
+      "ma_alignment": "혼합",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 52,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 0,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "373220.KS",
+      "name": "LG Energy Solution",
+      "price": "369,000원",
+      "change_pct": -3.91,
+      "rec_score": 51.0,
+      "mfc_score": 35.0,
+      "mfc_breakdown": {
+        "trend": 0,
+        "momentum": 39.1,
+        "flow": 70.0,
+        "volatility": 60.0,
+        "structure": 15
+      },
+      "phase": "Markdown",
+      "rating": "Tactical Hold",
+      "advice_short": "매도 우위 (하방 경계 - 바닥 탐색 진행 중, 섣부른 진입 주의)",
+      "rsi": 44.1,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "하단",
+      "ma_alignment": "역배열",
+      "tags": [
+        {
+          "text": "하락 추세",
+          "cls": "negative"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 35,
+        "wyckoff": 10,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "247540.KS",
+      "name": "247540.KS,0P0001GZPV,623889",
+      "price": "191,300원",
+      "change_pct": -3.24,
+      "rec_score": 44.6,
+      "mfc_score": 43.9,
+      "mfc_breakdown": {
+        "trend": 45,
+        "momentum": 41.4,
+        "flow": 55.0,
+        "volatility": 60.0,
+        "structure": 15
+      },
+      "phase": "Markdown",
+      "rating": "Tactical Hold",
+      "advice_short": "매도 우위 (비중 축소 - 지지선 단기 이탈 및 추세 악화)",
+      "rsi": 46.4,
+      "stoch_golden": false,
+      "obv_trend": "상승",
+      "bollinger": "하단",
+      "ma_alignment": "혼합",
+      "tags": [
+        {
+          "text": "하락 추세",
+          "cls": "negative"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 44,
+        "wyckoff": 10,
+        "stochastic": 0,
+        "obv": 100,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "068270.KS",
+      "name": "Celltrion",
+      "price": "205,500원",
+      "change_pct": -0.24,
+      "rec_score": 43.2,
+      "mfc_score": 40.6,
+      "mfc_breakdown": {
+        "trend": 60,
+        "momentum": 36.3,
+        "flow": 30.0,
+        "volatility": 55.0,
+        "structure": 15
+      },
+      "phase": "Markdown",
+      "rating": "Tactical Hold",
+      "advice_short": "매도 우위 (하방 경계 - 바닥 탐색 진행 중, 섣부른 진입 주의)",
+      "rsi": 41.3,
+      "stoch_golden": true,
+      "obv_trend": "하락",
+      "bollinger": "하단",
+      "ma_alignment": "혼합",
+      "tags": [
+        {
+          "text": "하락 추세",
+          "cls": "negative"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 41,
+        "wyckoff": 10,
+        "stochastic": 100,
+        "obv": 0,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "003670.KS",
+      "name": "POSCO FUTURE M",
+      "price": "190,900원",
+      "change_pct": -9.31,
+      "rec_score": 42.1,
+      "mfc_score": 37.7,
+      "mfc_breakdown": {
+        "trend": 45,
+        "momentum": 35.0,
+        "flow": 25.0,
+        "volatility": 55.0,
+        "structure": 30
+      },
+      "phase": "Markdown",
+      "rating": "Avoid / Sell-off",
+      "advice_short": "매도 우위 (투매 경고 - 강한 하방 압력 및 패닉셀 동반)",
+      "rsi": 40.0,
+      "stoch_golden": false,
+      "obv_trend": "하락",
+      "bollinger": "하단",
+      "ma_alignment": "혼합",
+      "tags": [
+        {
+          "text": "하락 추세",
+          "cls": "negative"
+        },
+        {
+          "text": "RSI 상승 다이버전스",
+          "cls": "positive"
+        },
+        {
+          "text": "거래량 폭발",
+          "cls": "neutral"
+        }
+      ],
+      "factors": {
+        "mfc": 38,
+        "wyckoff": 10,
+        "stochastic": 0,
+        "obv": 0,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "006400.KS",
+      "name": "SAMSUNG SDI CO.,LTD.",
+      "price": "388,000원",
+      "change_pct": -3.0,
+      "rec_score": 35.9,
+      "mfc_score": 47.2,
+      "mfc_breakdown": {
+        "trend": 75,
+        "momentum": 44.7,
+        "flow": 30.0,
+        "volatility": 60.0,
+        "structure": 15
+      },
+      "phase": "Markdown",
+      "rating": "Tactical Hold",
+      "advice_short": "매도 우위 (비중 축소 - 지지선 단기 이탈 및 추세 악화)",
+      "rsi": 49.7,
+      "stoch_golden": false,
+      "obv_trend": "하락",
+      "bollinger": "하단",
+      "ma_alignment": "혼합",
+      "tags": [
+        {
+          "text": "하락 추세",
+          "cls": "negative"
+        }
+      ],
+      "factors": {
+        "mfc": 47,
+        "wyckoff": 10,
+        "stochastic": 0,
+        "obv": 0,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "005380.KS",
+      "name": "HyundaiMtr",
+      "price": "517,000원",
+      "change_pct": -0.77,
+      "rec_score": 34.8,
+      "mfc_score": 44.5,
+      "mfc_breakdown": {
+        "trend": 75,
+        "momentum": 45.1,
+        "flow": 20.0,
+        "volatility": 55.0,
+        "structure": 15
+      },
+      "phase": "Markdown",
+      "rating": "Tactical Hold",
+      "advice_short": "매도 우위 (비중 축소 - 지지선 단기 이탈 및 추세 악화)",
+      "rsi": 50.2,
+      "stoch_golden": false,
+      "obv_trend": "하락",
+      "bollinger": "하단",
+      "ma_alignment": "혼합",
+      "tags": [
+        {
+          "text": "하락 추세",
+          "cls": "negative"
+        }
+      ],
+      "factors": {
+        "mfc": 44,
+        "wyckoff": 10,
+        "stochastic": 0,
+        "obv": 0,
+        "bollinger": 100
+      }
+    },
+    {
+      "ticker": "035720.KS",
+      "name": "Kakao",
+      "price": "50,600원",
+      "change_pct": 0.4,
+      "rec_score": 25.4,
+      "mfc_score": 21.1,
+      "mfc_breakdown": {
+        "trend": 0,
+        "momentum": 35.2,
+        "flow": 5.0,
+        "volatility": 60.0,
+        "structure": 15
+      },
+      "phase": "Markdown",
+      "rating": "Tactical Hold",
+      "advice_short": "매도 우위 (하방 경계 - 바닥 탐색 진행 중, 섣부른 진입 주의)",
+      "rsi": 40.2,
+      "stoch_golden": false,
+      "obv_trend": "하락",
+      "bollinger": "하단",
+      "ma_alignment": "역배열",
+      "tags": [
+        {
+          "text": "하락 추세",
+          "cls": "negative"
+        }
+      ],
+      "factors": {
+        "mfc": 21,
+        "wyckoff": 10,
+        "stochastic": 0,
+        "obv": 0,
+        "bollinger": 100
+      }
+    }
+  ],
+  "picks_us": [
+    {
+      "ticker": "MEOH",
+      "name": "Methanex Corporation",
+      "price": "$51.75",
+      "change_pct": -10.87,
+      "rec_score": 77.5,
+      "mfc_score": 81.2,
+      "mfc_breakdown": {
+        "trend": 100,
+        "momentum": 85.9,
+        "flow": 80.0,
+        "volatility": 60.0,
+        "structure": 65
+      },
+      "phase": "Accumulation",
+      "rating": "Tactical Hold",
+      "advice_short": "중립 대기 (거래 대금 급감, 뚜렷한 주도력 부재)",
+      "rsi": 51.7,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단",
+      "ma_alignment": "정배열",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 81,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "PED",
+      "name": "Pedevco Corp.",
+      "price": "$18.18",
+      "change_pct": 17.29,
+      "rec_score": 74.9,
+      "mfc_score": 84.8,
+      "mfc_breakdown": {
+        "trend": 100,
+        "momentum": 94.4,
+        "flow": 95.0,
+        "volatility": 35.0,
+        "structure": 80
+      },
+      "phase": "Markup",
+      "rating": "Tactical Overweight",
+      "advice_short": "매수 우위 (강력 매수 - 폭발적 슈팅 및 상단 돌파)",
+      "rsi": 68.7,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단 돌파",
+      "ma_alignment": "정배열",
+      "tags": [
+        {
+          "text": "상승 추세",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 85,
+        "wyckoff": 80,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "NOK",
+      "name": "Nokia Corporation Sponsored",
+      "price": "$8.24",
+      "change_pct": 1.23,
+      "rec_score": 74.6,
+      "mfc_score": 83.9,
+      "mfc_breakdown": {
+        "trend": 100,
+        "momentum": 92.5,
+        "flow": 85.0,
+        "volatility": 60.0,
+        "structure": 65
+      },
+      "phase": "Markup",
+      "rating": "Core Holding",
+      "advice_short": "매수 우위 (안정적 상승 추세 안착)",
+      "rsi": 65.0,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단",
+      "ma_alignment": "정배열",
+      "tags": [
+        {
+          "text": "상승 추세",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 84,
+        "wyckoff": 80,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "MUR",
+      "name": "Murphy Oil Corporation",
+      "price": "$36.81",
+      "change_pct": 6.02,
+      "rec_score": 73.5,
+      "mfc_score": 81.3,
+      "mfc_breakdown": {
+        "trend": 100,
+        "momentum": 92.2,
+        "flow": 80.0,
+        "volatility": 35.0,
+        "structure": 80
+      },
+      "phase": "Markup",
+      "rating": "Core Holding",
+      "advice_short": "매수 우위 (안정적 상승 추세 안착)",
+      "rsi": 64.4,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단 돌파",
+      "ma_alignment": "정배열",
+      "tags": [
+        {
+          "text": "상승 추세",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 81,
+        "wyckoff": 80,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "SSL",
+      "name": "Sasol Ltd.",
+      "price": "$11.31",
+      "change_pct": 6.7,
+      "rec_score": 73.0,
+      "mfc_score": 80.0,
+      "mfc_breakdown": {
+        "trend": 100,
+        "momentum": 75.0,
+        "flow": 95.0,
+        "volatility": 35.0,
+        "structure": 80
+      },
+      "phase": "Markup",
+      "rating": "Tactical Overweight",
+      "advice_short": "매수 우위 (비중 조절 - 상승 여력 잔존하나 과열권 진입)",
+      "rsi": 80.0,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단 돌파",
+      "ma_alignment": "정배열",
+      "tags": [
+        {
+          "text": "상승 추세",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 80,
+        "wyckoff": 80,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "SNDK",
+      "name": "Sandisk Corporation",
+      "price": "$661.62",
+      "change_pct": 6.92,
+      "rec_score": 72.5,
+      "mfc_score": 68.8,
+      "mfc_breakdown": {
+        "trend": 100,
+        "momentum": 59.3,
+        "flow": 70.0,
+        "volatility": 35.0,
+        "structure": 65
+      },
+      "phase": "Accumulation",
+      "rating": "Aggressive Buy",
+      "advice_short": "매수 우위 (분할 매수 - 바닥 확인 후 모멘텀 턴어라운드)",
+      "rsi": 58.7,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단",
+      "ma_alignment": "정배열",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 69,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "XRP-USD",
+      "name": "XRP USD",
+      "price": "$1.40",
+      "change_pct": 1.1,
+      "rec_score": 72.0,
+      "mfc_score": 67.5,
+      "mfc_breakdown": {
+        "trend": 50,
+        "momentum": 82.8,
+        "flow": 55.0,
+        "volatility": 90,
+        "structure": 65
+      },
+      "phase": "Accumulation",
+      "rating": "Aggressive Buy",
+      "advice_short": "매수 우위 (분할 매수 - 바닥 확인 후 모멘텀 턴어라운드)",
+      "rsi": 47.8,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단",
+      "ma_alignment": "골든크로스 진행",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        },
+        {
+          "text": "Squeeze 대기",
+          "cls": "neutral"
+        }
+      ],
+      "factors": {
+        "mfc": 68,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "BTC-USD",
+      "name": "Bitcoin USD",
+      "price": "$70794.86",
+      "change_pct": 0.43,
+      "rec_score": 71.8,
+      "mfc_score": 66.9,
+      "mfc_breakdown": {
+        "trend": 50,
+        "momentum": 86.5,
+        "flow": 70.0,
+        "volatility": 60.0,
+        "structure": 65
+      },
+      "phase": "Accumulation",
+      "rating": "Aggressive Buy",
+      "advice_short": "매수 우위 (분할 매수 - 바닥 확인 후 모멘텀 턴어라운드)",
+      "rsi": 53.0,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단",
+      "ma_alignment": "골든크로스 진행",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 67,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "ETH-USD",
+      "name": "Ethereum USD",
+      "price": "$2090.32",
+      "change_pct": 0.83,
+      "rec_score": 71.7,
+      "mfc_score": 66.8,
+      "mfc_breakdown": {
+        "trend": 50,
+        "momentum": 86.1,
+        "flow": 70.0,
+        "volatility": 60.0,
+        "structure": 65
+      },
+      "phase": "Accumulation",
+      "rating": "Aggressive Buy",
+      "advice_short": "매수 우위 (분할 매수 - 바닥 확인 후 모멘텀 턴어라운드)",
+      "rsi": 52.3,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단",
+      "ma_alignment": "골든크로스 진행",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 67,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    },
+    {
+      "ticker": "SOL-USD",
+      "name": "Solana USD",
+      "price": "$88.10",
+      "change_pct": 1.42,
+      "rec_score": 71.6,
+      "mfc_score": 66.6,
+      "mfc_breakdown": {
+        "trend": 50,
+        "momentum": 85.5,
+        "flow": 70.0,
+        "volatility": 60.0,
+        "structure": 65
+      },
+      "phase": "Accumulation",
+      "rating": "Aggressive Buy",
+      "advice_short": "매수 우위 (분할 매수 - 바닥 확인 후 모멘텀 턴어라운드)",
+      "rsi": 51.0,
+      "stoch_golden": true,
+      "obv_trend": "상승",
+      "bollinger": "상단",
+      "ma_alignment": "골든크로스 진행",
+      "tags": [
+        {
+          "text": "매집 구간",
+          "cls": "positive"
+        },
+        {
+          "text": "Stoch 골든크로스",
+          "cls": "positive"
+        },
+        {
+          "text": "OBV 상승",
+          "cls": "positive"
+        }
+      ],
+      "factors": {
+        "mfc": 67,
+        "wyckoff": 100,
+        "stochastic": 100,
+        "obv": 100,
+        "bollinger": 0
+      }
+    }
+  ]
+}
